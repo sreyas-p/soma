@@ -1,0 +1,106 @@
+{
+  "demographics": {
+    "name": "Camila Maria Lopez",
+    "gender": "female",
+    "birthDate": "1987-09-12",
+    "age": 37,
+    "address": "3268 West Johnson St.\r\nApt 117\r\nGARLAND TX 75043\r\nUnited States of America",
+    "phone": "+1 469-888-8888",
+    "email": "knixontestemail@epic.com"
+  },
+  "vitals": {
+    "bloodPressure": [],
+    "heartRate": [],
+    "temperature": [],
+    "weight": [],
+    "height": [],
+    "bmi": [],
+    "oxygenSaturation": [],
+    "respiratoryRate": []
+  },
+  "labResults": {
+    "4548-4": [
+      {
+        "display": "Hemoglobin A1c/Hemoglobin.total in Blood",
+        "value": 5.1,
+        "date": "2019-05-28T14:22:00Z",
+        "status": "final"
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "code": "E28.2",
+      "display": "Polycystic ovarian syndrome",
+      "status": "active",
+      "onsetDate": "2005-09-20",
+      "category": "Problem List Item"
+    },
+    {
+      "code": "271681002",
+      "display": "Stomach ache (finding)",
+      "category": "Encounter Diagnosis"
+    },
+    {
+      "code": "225566008",
+      "display": "Ischemic chest pain (finding)",
+      "category": "Encounter Diagnosis"
+    },
+    {
+      "code": "225566008",
+      "display": "Ischemic chest pain (finding)",
+      "category": "Encounter Diagnosis"
+    },
+    {
+      "code": "225566008",
+      "display": "Ischemic chest pain (finding)",
+      "category": "Encounter Diagnosis"
+    },
+    {
+      "code": "22253000",
+      "display": "Pain (finding)",
+      "category": "Encounter Diagnosis"
+    },
+    {
+      "code": "69878008",
+      "display": "Polycystic ovaries (disorder)",
+      "status": "active",
+      "onsetDate": "2005-09-20",
+      "category": "Encounter Diagnosis"
+    }
+  ],
+  "medications": [],
+  "allergies": [
+    {
+      "substance": "Patient not asked",
+      "status": "active"
+    }
+  ],
+  "procedures": [
+    {
+      "code": "93306",
+      "display": "HC TRANSTHORACIC ECHO",
+      "status": "completed",
+      "date": "2023-06-02T20:50:25Z",
+      "category": "Diagnostic procedure"
+    },
+    {
+      "code": "44950",
+      "display": "PR APPENDECTOMY",
+      "status": "completed",
+      "date": "2023-06-06T13:56:00Z",
+      "category": "Surgical procedure"
+    }
+  ],
+  "socialHistory": {
+    "smoking": {
+      "status": "Tobacco smoking consumption unknown",
+      "date": "2021-08-05T05:00:00Z"
+    },
+    "alcohol": null,
+    "exercise": null,
+    "diet": null,
+    "occupation": null
+  },
+  "summary": ""
+}

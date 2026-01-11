@@ -1,0 +1,486 @@
+{
+  "date": "2026-01-10",
+  "scraped_at": "2026-01-10T13:16:53.357242",
+  "target_meal": "Dinner",
+  "dining_halls": {
+    "Carrillo": {
+      "name": "Carrillo Dining Commons",
+      "meals": {
+        "Dinner": {
+          "categories": {
+            "Uncategorized": [
+              {
+                "name": "Sticky Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Chicken Pad Thai with Peanut",
+                "serving_size": "10 OZ",
+                "dietary_tags": [
+                  "contains_nuts"
+                ]
+              },
+              {
+                "name": "Vegetable Pad Thai w/Peanut",
+                "serving_size": "Cup",
+                "dietary_tags": [
+                  "vegan",
+                  "contains_nuts"
+                ]
+              },
+              {
+                "name": "Potato Leek Soup",
+                "serving_size": "6 oz Ladle",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Lemon Baked Salmon",
+                "serving_size": "4 oz.",
+                "dietary_tags": []
+              },
+              {
+                "name": "Carrots with Fresh Thyme",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Green Beans",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Italian Quinoa",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Rice Pilaf with Mushrooms",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Spinach Pecan Bacon & Cran Salad",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "contains_nuts"
+                ]
+              },
+              {
+                "name": "Pasta Carbonara",
+                "serving_size": "3/4 Cup",
+                "dietary_tags": []
+              },
+              {
+                "name": "Whole Wheat Spaghetti",
+                "serving_size": "1/3 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Garden Vegetable Marinara",
+                "serving_size": "3 oz Ladle",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Baked Potato",
+                "serving_size": "Potato",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Baked Sweet Potato",
+                "serving_size": "Potato",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Black Beans",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Brown Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Thai Chicken Curry Pizza",
+                "serving_size": "Slice",
+                "dietary_tags": []
+              },
+              {
+                "name": "Cheese Pizza on White",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Mushroom Pizza on Wheat",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Pizza Bread",
+                "serving_size": "Round",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Chocolate Chip Cake Kahlua",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "De La Guerra": {
+      "name": "De La Guerra Dining Commons",
+      "meals": {
+        "Dinner": {
+          "categories": {
+            "Uncategorized": [
+              {
+                "name": "Cream of Tomato Soup",
+                "serving_size": "6 oz Ladle",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Lemon Chicken Quarter",
+                "serving_size": "Quarter",
+                "dietary_tags": []
+              },
+              {
+                "name": "Rice Pilaf",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Fresh Broccoli Spears",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Baked Potato",
+                "serving_size": "Potato",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Chicken Bean & Rice Burrito",
+                "serving_size": "Burrito",
+                "dietary_tags": []
+              },
+              {
+                "name": "Vegetable Soft Taco",
+                "serving_size": "Taco",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Spanish Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Refried Beans",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Flour Tortilla",
+                "serving_size": "Tortilla",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Corn Tortilla",
+                "serving_size": "Tortilla",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Wheat Tortilla",
+                "serving_size": "Tortilla",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Roasted Tomato and Chile Salsa",
+                "serving_size": "1 oz Ladle",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Pepperoni Pizza",
+                "serving_size": "Slice",
+                "dietary_tags": []
+              },
+              {
+                "name": "Cheese Pizza on Wheat Crust",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Herb Breadsticks",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Meat Sauce",
+                "serving_size": "3 oz Ladle",
+                "dietary_tags": []
+              },
+              {
+                "name": "Spaghetti Pasta",
+                "serving_size": "1/3 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Herb Spirals w/Olive Oil and Garlic (vgn",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": []
+              },
+              {
+                "name": "Long Grain Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Brown Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Caesar Salad",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Pizza Bread",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "French Peach Crumb Pie",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Portola": {
+      "name": "Portola Dining Commons",
+      "meals": {
+        "Dinner": {
+          "categories": {
+            "Uncategorized": [
+              {
+                "name": "Baked Potato",
+                "serving_size": "Potato",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Jasmine Rice",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Chicken White Bean Chili",
+                "serving_size": "6 oz Ladle",
+                "dietary_tags": []
+              },
+              {
+                "name": "Grilled BBQ Chicken Pizza",
+                "serving_size": "Slice",
+                "dietary_tags": []
+              },
+              {
+                "name": "Pasta Primavera w/Tomato Sauce",
+                "serving_size": "3/4 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Roasted Chicken & Zucchini Marinara",
+                "serving_size": "3 oz Ladle",
+                "dietary_tags": []
+              },
+              {
+                "name": "Farfalle Pasta",
+                "serving_size": "1/3 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Apple Crisp",
+                "serving_size": "Piece",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Pesto Bread",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Roast Pork Loin with Spiced Apples",
+                "serving_size": "3 oz",
+                "dietary_tags": []
+              },
+              {
+                "name": "Garlic Red Mashed Potato",
+                "serving_size": "5 OZ",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Fresh Tomato Quiche",
+                "serving_size": "Slice",
+                "dietary_tags": [
+                  "vegetarian"
+                ]
+              },
+              {
+                "name": "Steamed Broccoli & Cauliflower",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Black Beans",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Thai Chicken Taco",
+                "serving_size": "Taco",
+                "dietary_tags": []
+              },
+              {
+                "name": "Papaya Cilantro Lime Salsa",
+                "serving_size": "1 oz Ladle",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Chile Salsa",
+                "serving_size": "Ounce",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Ten Spice Fried Rice",
+                "serving_size": "4 oz",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Sauteed Cabbage & Carrots",
+                "serving_size": "1/2 Cup",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              },
+              {
+                "name": "Calamari Roll",
+                "serving_size": "3 Pieces",
+                "dietary_tags": []
+              },
+              {
+                "name": "Vegetable Roll",
+                "serving_size": "3 Pieces",
+                "dietary_tags": [
+                  "vegan"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Ortega": {
+      "name": "Takeout at Ortega Commons",
+      "meals": {}
+    }
+  }
+}

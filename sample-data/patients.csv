@@ -1,0 +1,101 @@
+patient_id,name,dob,gender,address,phone
+P00001,Alexander Hill,2004-03-31,M,"819 Johnson Course, Santa Barbara, CA 91792",989.608.3863
+P00002,Abigail Shaffer,1976-09-21,F,"2351 Noah Knolls Suite 940, Santa Barbara, CA 95978",281.561.8495x931
+P00003,William Wyatt,1990-11-22,M,"7525 Clark Grove Apt. 928, Santa Barbara, CA 95974",527.264.8350
+P00004,James Jones,1996-12-09,M,"76724 John Points Suite 969, Santa Barbara, CA 93272",(332)887-1012x269
+P00005,Whitney Rice,2003-12-30,F,"184 Rodriguez Mews, Santa Barbara, CA 91296",704.482.8148x932
+P00006,Richard Moreno,1996-01-11,M,"0154 Brian Wells Apt. 171, Santa Barbara, CA 94364",001-822-778-2489x63834
+P00007,Joseph Martinez,1978-04-02,M,"98393 Chad Roads Apt. 310, Santa Barbara, CA 92707",983-547-3829
+P00008,Robert Lee,1982-02-14,M,"6670 Bruce Stream Suite 133, Santa Barbara, CA 91559",+1-972-362-4731
+P00009,Yvonne Huff,1979-12-29,F,"67736 Franklin Alley, Santa Barbara, CA 93199",274-768-7234x309
+P00010,Lauren Shaw,1972-11-17,F,"81219 Emma Freeway, Santa Barbara, CA 93308",793-699-0916
+P00011,Mike Allen,1987-06-03,M,"5107 Charles Forest Suite 251, Santa Barbara, CA 92002",(442)678-4980x841
+P00012,Ashley Tran,1964-04-18,F,"534 King Vista, Santa Barbara, CA 90417",964-800-5242
+P00013,Ashley Landry,1988-09-18,F,"059 Russell Canyon, Santa Barbara, CA 92526",(405)433-1586x923
+P00014,Alexander Doyle,1964-05-10,M,"342 Patrick Camp Suite 337, Santa Barbara, CA 92865",733-203-6541x4586
+P00015,Wesley White,1996-12-27,M,"19655 Obrien Pass Apt. 693, Santa Barbara, CA 92087",7607883561
+P00016,Belinda Mccullough,1995-07-14,F,"6482 Robert Light Apt. 994, Santa Barbara, CA 93327",+1-904-943-6995
+P00017,Cindy Kennedy,1963-12-04,F,"148 Davis Terrace, Santa Barbara, CA 91925",+1-543-832-0037x91769
+P00018,Dana Douglas,2002-01-12,F,"3287 Angela Vista, Santa Barbara, CA 90995",927.488.9579x868
+P00019,Karen Green,1992-04-09,F,"734 Jones Heights Apt. 455, Santa Barbara, CA 94425",822-736-2316
+P00020,Jennifer Clark,1997-06-12,F,"670 Evans Loaf, Santa Barbara, CA 93433",+1-289-837-3467
+P00021,Meghan Powell,1961-03-11,F,"98069 Christopher Meadow Apt. 720, Santa Barbara, CA 92132",(253)775-5646x4170
+P00022,Barry Bernard,1999-01-24,M,"30923 Thomas Crescent, Santa Barbara, CA 94621",674.352.9912
+P00023,Timothy Johnston,1978-12-07,M,"3193 Heidi Hollow Apt. 905, Santa Barbara, CA 94365",(451)685-0671x65726
+P00024,Tamara Hampton,1997-06-28,F,"3147 Karen Port Suite 507, Santa Barbara, CA 92663",(273)554-5494
+P00025,Nathan Freeman,1995-10-13,M,"770 Kelly Lodge Apt. 495, Santa Barbara, CA 93877",+1-685-668-5574
+P00026,Mikayla Stewart,1972-10-07,F,"37498 Hooper Village, Santa Barbara, CA 91591",435-924-0824x0084
+P00027,Alexandria Mitchell,1961-07-03,F,"04711 Vasquez Ports Apt. 229, Santa Barbara, CA 92490",831-986-9993
+P00028,Edward Chapman,1960-06-14,M,"133 Guerrero Estate, Santa Barbara, CA 91965",(681)220-6797
+P00029,Michelle Warner,1981-06-24,F,"9361 Deborah Grove, Santa Barbara, CA 91166",902-649-9471
+P00030,Terri Mason,1998-07-09,F,"065 Johnson Forks, Santa Barbara, CA 95524",001-990-649-0278
+P00031,Kevin Walters,1976-07-07,M,"5655 Mia Isle, Santa Barbara, CA 93373",001-874-268-0715x451
+P00032,Joshua Gutierrez,1948-03-18,M,"770 Joseph Curve Suite 771, Santa Barbara, CA 90237",+1-393-424-8086x1317
+P00033,Michelle Hicks,1973-04-19,F,"3782 Lee Rapid Apt. 146, Santa Barbara, CA 92785",840.944.9972x78755
+P00034,Sergio Pollard,1966-04-07,M,"60576 Mcneil Turnpike Apt. 702, Santa Barbara, CA 94115",001-851-471-8702
+P00035,Richard Baker,1978-08-25,M,"158 Finley Road Suite 809, Santa Barbara, CA 90561",643.216.1172
+P00036,Robert Carter,1967-05-26,M,"86922 Christian Ways, Santa Barbara, CA 93134",+1-637-492-3747x407
+P00037,Theresa Huerta,1973-04-29,F,"474 Yvonne Walk Suite 136, Santa Barbara, CA 94686",(694)540-6409x097
+P00038,Harold Fields,1980-08-24,M,"104 Johnson Lakes, Santa Barbara, CA 96000",(714)656-2328
+P00039,Dawn Summers,1980-07-04,F,"517 Donald Fork Suite 851, Santa Barbara, CA 93233",7483175496
+P00040,Kaitlyn Harvey,1957-12-20,F,"317 Banks Crescent Apt. 004, Santa Barbara, CA 94036",813-482-6758
+P00041,Mary Bass,1989-08-22,F,"53773 Garcia Spur Suite 850, Santa Barbara, CA 93262",531-371-3900x532
+P00042,Kristen Willis,1990-11-02,F,"2904 Vanessa Plains, Santa Barbara, CA 92054",(210)420-5395
+P00043,Cameron Fisher,1974-02-20,M,"7589 Shannon Forges, Santa Barbara, CA 95039",3849700766
+P00044,Jill Lam,1956-05-06,F,"24998 James Ranch, Santa Barbara, CA 94347",778-996-1183x6736
+P00045,Monica Edwards,1979-05-04,F,"2711 Christopher Court Suite 280, Santa Barbara, CA 94805",+1-685-716-5604
+P00046,Jordan Moore,1942-07-04,M,"8514 Lindsay Vista, Santa Barbara, CA 94596",001-499-480-9402x44550
+P00047,Jennifer Thomas,1996-08-28,F,"83667 Moore Inlet, Santa Barbara, CA 95912",999-810-2290x14767
+P00048,Paul Wilson,1993-06-15,M,"978 Williams Locks Apt. 034, Santa Barbara, CA 91731",001-724-345-1076x22683
+P00049,Patrick Graham,1987-06-26,M,"9696 Roberts Lodge, Santa Barbara, CA 90171",829-675-1613x69681
+P00050,Connie Maxwell,1999-02-06,F,"835 Luna Viaduct, Santa Barbara, CA 95288",(331)424-3292
+P00051,Lori Marshall,1959-08-03,F,"995 Hernandez Cliff Suite 744, Santa Barbara, CA 94845",7586147700
+P00052,Sharon Wyatt,1940-08-22,F,"9807 Marc Mountains Apt. 071, Santa Barbara, CA 92814",001-718-720-3778x892
+P00053,Jasmine Schroeder,2006-09-14,F,"515 Angela Lights, Santa Barbara, CA 92328",392-651-9254x629
+P00054,Mason Murphy,1973-02-25,M,"685 Michael Falls, Santa Barbara, CA 91755",473-832-2141x88805
+P00055,Catherine Schwartz,1993-08-26,F,"706 Rhodes Freeway, Santa Barbara, CA 93639",+1-947-638-3473x597
+P00056,Kathryn Barnes,1952-03-09,F,"240 Sawyer Plaza, Santa Barbara, CA 90841",001-581-941-2478x261
+P00057,Timothy Perry,1949-06-03,M,"61530 Galvan Villages Suite 220, Santa Barbara, CA 92351",827.379.0104x3289
+P00058,David Martinez,1974-04-07,M,"17980 Jennifer Highway Suite 095, Santa Barbara, CA 91971",001-262-818-5188
+P00059,Andrew Hughes,1943-05-26,M,"1531 Anderson Knoll, Santa Barbara, CA 94473",727-672-2170x43030
+P00060,William Daniels,1969-04-12,M,"5054 Lauren Mews, Santa Barbara, CA 93277",001-876-452-7758x4161
+P00061,Frank Miller,1988-09-07,M,"9627 West Stream Suite 964, Santa Barbara, CA 95239",9162582029
+P00062,Cynthia Brewer,1987-05-22,F,"275 Wallace Club, Santa Barbara, CA 94702",(485)965-4310
+P00063,Thomas Wilson,1966-10-19,M,"94731 Melissa Mission Apt. 715, Santa Barbara, CA 95471",(518)484-4225x831
+P00064,Kathleen Ward,2005-08-06,F,"291 Kyle Stravenue Suite 866, Santa Barbara, CA 94710",425-417-7852
+P00065,Thomas Brown,1961-02-24,M,"2253 Meza Path, Santa Barbara, CA 92327",343-484-2498
+P00066,Lauren Jackson,1977-08-25,F,"001 Stacy Trail Suite 396, Santa Barbara, CA 95064",+1-407-984-4736x4710
+P00067,John Peterson,1977-03-03,M,"562 Robertson Coves Suite 371, Santa Barbara, CA 92192",732.510.4696x325
+P00068,Jonathan Robertson,1997-07-11,M,"0168 Levy Forge Suite 004, Santa Barbara, CA 94055",+1-274-880-1624x565
+P00069,Kristina Cox,1999-04-25,F,"784 David Court Suite 558, Santa Barbara, CA 92996",001-923-498-6800x02578
+P00070,Jose Murphy,1991-08-21,M,"9495 Erickson Hills, Santa Barbara, CA 93891",9556169409
+P00071,Dr. Paula Lane,1986-09-30,F,"89623 Ashley Squares Apt. 307, Santa Barbara, CA 92570",(926)836-8970x28385
+P00072,Carrie Barr,1940-05-14,F,"497 Susan Harbors Suite 344, Santa Barbara, CA 95775",875.875.8441
+P00073,Tina Ballard,1980-04-25,F,"157 Burgess Forest Apt. 848, Santa Barbara, CA 95704",321-899-3308x330
+P00074,John Maldonado,1968-02-29,M,"7734 Mitchell Circle, Santa Barbara, CA 90733",+1-293-280-2620x6724
+P00075,Lindsey Hebert,1960-05-11,F,"887 Melissa Mountain Suite 315, Santa Barbara, CA 91332",001-774-320-5493x2966
+P00076,Anna Holden,1941-07-03,F,"46374 Turner Stream, Santa Barbara, CA 94694",8456301742
+P00077,Margaret Shepard,1992-05-23,F,"27279 Perry Plaza, Santa Barbara, CA 93858",001-583-439-1878x51910
+P00078,Scott Ramos,1979-09-15,M,"87072 Bryant Centers Suite 406, Santa Barbara, CA 92085",2393106518
+P00079,John Mitchell Jr.,1964-02-28,M,"6766 Felicia Shore Apt. 512, Santa Barbara, CA 94402",(582)930-0478x6863
+P00080,Donald Pineda,1978-10-01,M,"69033 Craig Bypass, Santa Barbara, CA 93658",+1-603-506-7383x028
+P00081,Nicholas Flores,2007-08-16,M,"42836 Hill Point Apt. 687, Santa Barbara, CA 90385",(568)556-6246x287
+P00082,Michael Shaffer,2000-12-09,M,"8826 Jonathan Isle Apt. 751, Santa Barbara, CA 94388",001-930-546-9901x3983
+P00083,Gary Krueger,1999-01-15,M,"173 Randy Garden, Santa Barbara, CA 94523",746-578-5445x87717
+P00084,Jason Hart,1965-03-31,M,"48996 Hernandez Isle, Santa Barbara, CA 91885",(493)978-5477x7252
+P00085,Steve Mooney,1942-12-25,M,"00623 Jasmine Branch, Santa Barbara, CA 91792",275.609.9770x08860
+P00086,Dustin Shaw,1972-09-21,M,"11823 Christine Glen Suite 461, Santa Barbara, CA 93057",(979)233-4101x6668
+P00087,Michele Miller,1980-11-14,F,"180 Jason Ways Suite 401, Santa Barbara, CA 95607",689-402-5039x261
+P00088,Keith Atkinson,1947-09-14,M,"2185 Connor Fort Apt. 599, Santa Barbara, CA 94880",(850)347-7358x6629
+P00089,Edward Wright,1947-02-05,M,"62655 Christopher Inlet Suite 541, Santa Barbara, CA 91086",226-378-8861
+P00090,Anna George,1983-05-08,F,"46618 Ashley Extension Suite 224, Santa Barbara, CA 92467",672-512-6464x715
+P00091,Jon Jensen,1995-06-26,M,"0659 Brock Isle, Santa Barbara, CA 93607",969-524-5937x52654
+P00092,Diana Hartman,1962-05-23,F,"828 Stephanie Mountain, Santa Barbara, CA 95803",674.416.7243
+P00093,Rachel Jones,1956-01-06,F,"688 Stephens Turnpike Suite 891, Santa Barbara, CA 90896",001-535-529-0965x61014
+P00094,Jeanne Barton,2001-08-12,F,"0714 Knapp Corner, Santa Barbara, CA 90951",001-925-745-7387x5717
+P00095,Andrew Page,2000-01-18,M,"123 Andrea Isle Suite 736, Santa Barbara, CA 95159",(826)860-9379
+P00096,Cindy Ramirez,1964-09-23,F,"182 Nguyen Mount, Santa Barbara, CA 90934",978-459-6969x155
+P00097,Michael Evans,1976-08-21,M,"251 Kevin Falls, Santa Barbara, CA 93059",001-428-466-9296x627
+P00098,Charles Edwards,1983-06-23,M,"0723 Maynard Parkways, Santa Barbara, CA 95350",667.567.7219x0340
+P00099,Carol Ellis,1990-10-08,F,"819 Joseph Plains Suite 807, Santa Barbara, CA 94476",361.934.0745
+P00100,Autumn Cain,1984-03-26,F,"962 Kristen Via Apt. 095, Santa Barbara, CA 94361",898-225-4494x812

@@ -1,0 +1,353 @@
+{
+  "fhir": {
+    "Patient": [
+      {
+        "resourceType": "Patient",
+        "id": "sample-patient-001",
+        "name": [
+          {
+            "text": "John Smith",
+            "family": "Smith",
+            "given": ["John"]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-06-15",
+        "telecom": [
+          { "system": "phone", "value": "555-123-4567" },
+          { "system": "email", "value": "john.smith@email.com" }
+        ],
+        "address": [
+          { "text": "123 Main St, Anytown, CA 90210" }
+        ]
+      }
+    ],
+    "Condition": [
+      {
+        "resourceType": "Condition",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "38341003",
+              "display": "High blood pressure (Hypertension)"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [{ "code": "active" }]
+        },
+        "severity": {
+          "coding": [{ "display": "Moderate" }]
+        },
+        "onsetDateTime": "2020-03-15"
+      },
+      {
+        "resourceType": "Condition",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 Diabetes Mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [{ "code": "managed" }]
+        },
+        "severity": {
+          "coding": [{ "display": "Mild" }]
+        },
+        "onsetDateTime": "2019-08-20"
+      }
+    ],
+    "MedicationRequest": [
+      {
+        "resourceType": "MedicationRequest",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "860975",
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "timing": {
+              "repeat": {
+                "frequency": 2,
+                "period": 1,
+                "periodUnit": "d"
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 500,
+                  "unit": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "authoredOn": "2019-08-25",
+        "reasonCode": [
+          {
+            "coding": [{ "display": "Type 2 Diabetes management" }]
+          }
+        ]
+      },
+      {
+        "resourceType": "MedicationRequest",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "197884",
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "timing": {
+              "repeat": {
+                "frequency": 1,
+                "period": 1,
+                "periodUnit": "d"
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 10,
+                  "unit": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "authoredOn": "2020-03-20",
+        "reasonCode": [
+          {
+            "coding": [{ "display": "Blood pressure control" }]
+          }
+        ]
+      }
+    ],
+    "AllergyIntolerance": [
+      {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [{ "code": "active" }]
+        },
+        "category": ["medication"],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "70618",
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "severity": "moderate",
+            "manifestation": [
+              {
+                "coding": [{ "display": "Skin rash" }]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [{ "code": "active" }]
+        },
+        "category": ["food"],
+        "code": {
+          "coding": [
+            {
+              "display": "Shellfish"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "severity": "severe",
+            "manifestation": [
+              {
+                "coding": [{ "display": "Anaphylaxis" }]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Procedure": [
+      {
+        "resourceType": "Procedure",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "80146002",
+              "display": "Appendectomy"
+            }
+          ]
+        },
+        "status": "completed",
+        "performedDateTime": "2010-05-10",
+        "outcome": {
+          "coding": [{ "code": "completed" }]
+        }
+      }
+    ],
+    "Observation": [
+      {
+        "resourceType": "Observation",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8302-2",
+              "display": "Height"
+            }
+          ]
+        },
+        "valueQuantity": {
+          "value": 175,
+          "unit": "cm"
+        },
+        "effectiveDateTime": "2024-01-15"
+      },
+      {
+        "resourceType": "Observation",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "Weight"
+            }
+          ]
+        },
+        "valueQuantity": {
+          "value": 82,
+          "unit": "kg"
+        },
+        "effectiveDateTime": "2024-01-15"
+      },
+      {
+        "resourceType": "Observation",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ]
+        },
+        "valueQuantity": {
+          "value": 26.8,
+          "unit": "kg/m2"
+        },
+        "effectiveDateTime": "2024-01-15"
+      },
+      {
+        "resourceType": "Observation",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "Heart rate"
+            }
+          ]
+        },
+        "valueQuantity": {
+          "value": 72,
+          "unit": "bpm"
+        },
+        "effectiveDateTime": "2024-01-15"
+      },
+      {
+        "resourceType": "Observation",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4",
+              "display": "Blood pressure panel"
+            }
+          ]
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 138,
+              "unit": "mmHg"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 88,
+              "unit": "mmHg"
+            }
+          }
+        ],
+        "effectiveDateTime": "2024-01-15"
+      },
+      {
+        "resourceType": "Observation",
+        "category": [
+          {
+            "coding": [{ "code": "social-history" }]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "72166-2",
+              "display": "Smoking status"
+            }
+          ]
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "display": "Former smoker"
+            }
+          ]
+        },
+        "effectiveDateTime": "2024-01-15"
+      }
+    ]
+  }
+}

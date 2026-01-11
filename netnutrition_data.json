@@ -1,0 +1,926 @@
+[
+  {
+    "hall": "Ortega",
+    "date": "2026-01-10",
+    "meal": "Lunch",
+    "items": [
+      {
+        "name": "Korean Chicken & Rice",
+        "serving_size": "Plate",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Plate"
+        }
+      },
+      {
+        "name": "Bacon Breakfast Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Creamy Pesto Pasta with Chicken",
+        "serving_size": "12 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "12 OZ"
+        }
+      },
+      {
+        "name": "Macaroni & Cheese (v)",
+        "serving_size": "16 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 OZ"
+        }
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Mandarin Orange Salad w/Dressing (vgn)",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Turkey Club Sub Sandwich",
+        "serving_size": "Sandwich",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Sandwich"
+        }
+      },
+      {
+        "name": "Steak Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Classic Burger",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Veggie Burger (v)",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Vegetable Pasta Primavera (vgn)",
+        "serving_size": "10 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "10 OZ"
+        }
+      },
+      {
+        "name": "Pressed Bean & Cheese Burrito (v)",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Chipotle BBQ Chicken & Potatoes",
+        "serving_size": "11 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "11 OZ"
+        }
+      },
+      {
+        "name": "Sweet & Sour Tofu Stir Fry (vgn)",
+        "serving_size": "17 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "17 OZ"
+        }
+      },
+      {
+        "name": "Potato Leek Soup (v)",
+        "serving_size": "6 oz Ladle",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 oz Ladle"
+        }
+      },
+      {
+        "name": "House Salad (vgn)",
+        "serving_size": "4.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4.5 OZ"
+        }
+      },
+      {
+        "name": "Roasted Cauliflower (vgn)",
+        "serving_size": "4 oz",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4 oz"
+        }
+      },
+      {
+        "name": "Garlic Spinach (vgn)",
+        "serving_size": "6 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 OZ"
+        }
+      },
+      {
+        "name": "Hummus with Celery & Carrots (vgn)",
+        "serving_size": "5.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5.5 OZ"
+        }
+      },
+      {
+        "name": "Fries (vgn)",
+        "serving_size": "5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5 OZ"
+        }
+      },
+      {
+        "name": "Potato Chip (vgn)",
+        "serving_size": "Bag",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Bag"
+        }
+      },
+      {
+        "name": "Chocolate Chip Cookie (v)",
+        "serving_size": "Cookie",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Cookie"
+        }
+      },
+      {
+        "name": "Water",
+        "serving_size": "16 Ounces",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 Ounces"
+        }
+      },
+      {
+        "name": "Balsamic Vinaigrette (vgn)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Ranch Dressing (v)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Mayonnaise (v)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Ketchup (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Mustard Packet (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      }
+    ]
+  },
+  {
+    "hall": "De La Guerra",
+    "date": "2026-01-10",
+    "meal": "Lunch",
+    "items": [
+      {
+        "name": "Korean Chicken & Rice",
+        "serving_size": "Plate",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Plate"
+        }
+      },
+      {
+        "name": "Bacon Breakfast Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Creamy Pesto Pasta with Chicken",
+        "serving_size": "12 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "12 OZ"
+        }
+      },
+      {
+        "name": "Macaroni & Cheese (v)",
+        "serving_size": "16 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 OZ"
+        }
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Mandarin Orange Salad w/Dressing (vgn)",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Turkey Club Sub Sandwich",
+        "serving_size": "Sandwich",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Sandwich"
+        }
+      },
+      {
+        "name": "Steak Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Classic Burger",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Veggie Burger (v)",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Vegetable Pasta Primavera (vgn)",
+        "serving_size": "10 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "10 OZ"
+        }
+      },
+      {
+        "name": "Pressed Bean & Cheese Burrito (v)",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Chipotle BBQ Chicken & Potatoes",
+        "serving_size": "11 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "11 OZ"
+        }
+      },
+      {
+        "name": "Sweet & Sour Tofu Stir Fry (vgn)",
+        "serving_size": "17 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "17 OZ"
+        }
+      },
+      {
+        "name": "Potato Leek Soup (v)",
+        "serving_size": "6 oz Ladle",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 oz Ladle"
+        }
+      },
+      {
+        "name": "House Salad (vgn)",
+        "serving_size": "4.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4.5 OZ"
+        }
+      },
+      {
+        "name": "Roasted Cauliflower (vgn)",
+        "serving_size": "4 oz",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4 oz"
+        }
+      },
+      {
+        "name": "Garlic Spinach (vgn)",
+        "serving_size": "6 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 OZ"
+        }
+      },
+      {
+        "name": "Hummus with Celery & Carrots (vgn)",
+        "serving_size": "5.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5.5 OZ"
+        }
+      },
+      {
+        "name": "Fries (vgn)",
+        "serving_size": "5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5 OZ"
+        }
+      },
+      {
+        "name": "Potato Chip (vgn)",
+        "serving_size": "Bag",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Bag"
+        }
+      },
+      {
+        "name": "Chocolate Chip Cookie (v)",
+        "serving_size": "Cookie",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Cookie"
+        }
+      },
+      {
+        "name": "Water",
+        "serving_size": "16 Ounces",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 Ounces"
+        }
+      },
+      {
+        "name": "Balsamic Vinaigrette (vgn)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Ranch Dressing (v)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Mayonnaise (v)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Ketchup (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Mustard Packet (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      }
+    ]
+  },
+  {
+    "hall": "Carrillo",
+    "date": "2026-01-10",
+    "meal": "Lunch",
+    "items": [
+      {
+        "name": "Korean Chicken & Rice",
+        "serving_size": "Plate",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Plate"
+        }
+      },
+      {
+        "name": "Bacon Breakfast Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Creamy Pesto Pasta with Chicken",
+        "serving_size": "12 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "12 OZ"
+        }
+      },
+      {
+        "name": "Macaroni & Cheese (v)",
+        "serving_size": "16 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 OZ"
+        }
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Mandarin Orange Salad w/Dressing (vgn)",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Turkey Club Sub Sandwich",
+        "serving_size": "Sandwich",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Sandwich"
+        }
+      },
+      {
+        "name": "Steak Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Classic Burger",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Veggie Burger (v)",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Vegetable Pasta Primavera (vgn)",
+        "serving_size": "10 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "10 OZ"
+        }
+      },
+      {
+        "name": "Pressed Bean & Cheese Burrito (v)",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Chipotle BBQ Chicken & Potatoes",
+        "serving_size": "11 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "11 OZ"
+        }
+      },
+      {
+        "name": "Sweet & Sour Tofu Stir Fry (vgn)",
+        "serving_size": "17 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "17 OZ"
+        }
+      },
+      {
+        "name": "Potato Leek Soup (v)",
+        "serving_size": "6 oz Ladle",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 oz Ladle"
+        }
+      },
+      {
+        "name": "House Salad (vgn)",
+        "serving_size": "4.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4.5 OZ"
+        }
+      },
+      {
+        "name": "Roasted Cauliflower (vgn)",
+        "serving_size": "4 oz",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4 oz"
+        }
+      },
+      {
+        "name": "Garlic Spinach (vgn)",
+        "serving_size": "6 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 OZ"
+        }
+      },
+      {
+        "name": "Hummus with Celery & Carrots (vgn)",
+        "serving_size": "5.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5.5 OZ"
+        }
+      },
+      {
+        "name": "Fries (vgn)",
+        "serving_size": "5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5 OZ"
+        }
+      },
+      {
+        "name": "Potato Chip (vgn)",
+        "serving_size": "Bag",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Bag"
+        }
+      },
+      {
+        "name": "Chocolate Chip Cookie (v)",
+        "serving_size": "Cookie",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Cookie"
+        }
+      },
+      {
+        "name": "Water",
+        "serving_size": "16 Ounces",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 Ounces"
+        }
+      },
+      {
+        "name": "Balsamic Vinaigrette (vgn)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Ranch Dressing (v)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Mayonnaise (v)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Ketchup (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Mustard Packet (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      }
+    ]
+  },
+  {
+    "hall": "Portola",
+    "date": "2026-01-10",
+    "meal": "Lunch",
+    "items": [
+      {
+        "name": "Korean Chicken & Rice",
+        "serving_size": "Plate",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Plate"
+        }
+      },
+      {
+        "name": "Bacon Breakfast Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Creamy Pesto Pasta with Chicken",
+        "serving_size": "12 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "12 OZ"
+        }
+      },
+      {
+        "name": "Macaroni & Cheese (v)",
+        "serving_size": "16 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 OZ"
+        }
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Mandarin Orange Salad w/Dressing (vgn)",
+        "serving_size": "Salad",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Salad"
+        }
+      },
+      {
+        "name": "Turkey Club Sub Sandwich",
+        "serving_size": "Sandwich",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Sandwich"
+        }
+      },
+      {
+        "name": "Steak Burrito",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Classic Burger",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Veggie Burger (v)",
+        "serving_size": "Burger",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burger"
+        }
+      },
+      {
+        "name": "Vegetable Pasta Primavera (vgn)",
+        "serving_size": "10 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "10 OZ"
+        }
+      },
+      {
+        "name": "Pressed Bean & Cheese Burrito (v)",
+        "serving_size": "Burrito",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Burrito"
+        }
+      },
+      {
+        "name": "Chipotle BBQ Chicken & Potatoes",
+        "serving_size": "11 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "11 OZ"
+        }
+      },
+      {
+        "name": "Sweet & Sour Tofu Stir Fry (vgn)",
+        "serving_size": "17 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "17 OZ"
+        }
+      },
+      {
+        "name": "Potato Leek Soup (v)",
+        "serving_size": "6 oz Ladle",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 oz Ladle"
+        }
+      },
+      {
+        "name": "House Salad (vgn)",
+        "serving_size": "4.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4.5 OZ"
+        }
+      },
+      {
+        "name": "Roasted Cauliflower (vgn)",
+        "serving_size": "4 oz",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "4 oz"
+        }
+      },
+      {
+        "name": "Garlic Spinach (vgn)",
+        "serving_size": "6 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "6 OZ"
+        }
+      },
+      {
+        "name": "Hummus with Celery & Carrots (vgn)",
+        "serving_size": "5.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5.5 OZ"
+        }
+      },
+      {
+        "name": "Fries (vgn)",
+        "serving_size": "5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "5 OZ"
+        }
+      },
+      {
+        "name": "Potato Chip (vgn)",
+        "serving_size": "Bag",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Bag"
+        }
+      },
+      {
+        "name": "Chocolate Chip Cookie (v)",
+        "serving_size": "Cookie",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Cookie"
+        }
+      },
+      {
+        "name": "Water",
+        "serving_size": "16 Ounces",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "16 Ounces"
+        }
+      },
+      {
+        "name": "Balsamic Vinaigrette (vgn)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Ranch Dressing (v)",
+        "serving_size": "1.5 OZ",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "1.5 OZ"
+        }
+      },
+      {
+        "name": "Mayonnaise (v)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Ketchup (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      },
+      {
+        "name": "Mustard Packet (vgn)",
+        "serving_size": "Packet",
+        "nutrition": {
+          "_error": "Page.wait_for_selector: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"div.modal-content\") to be visible\n",
+          "serving_size": "Packet"
+        }
+      }
+    ]
+  }
+]

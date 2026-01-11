@@ -1,0 +1,13 @@
+# Supabase Configuration
+# Copy this file to .env and fill in your values
+# Get these from your Supabase project: Settings > API
+
+# Project URL (looks like: https://xxxxx.supabase.co)
+SUPABASE_URL=https://your-project-id.supabase.co
+
+# Anon/Public key - safe for client-side use, used for AI agent queries
+SUPABASE_KEY=your-anon-public-key
+
+# Service Role key - keep secret, use for server-side uploads
+# This bypasses Row Level Security - use only in backend scripts
+SUPABASE_SERVICE_KEY=your-service-role-key

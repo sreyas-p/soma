@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 30
+    },
+    "api/generate-checklist.js": {
+      "maxDuration": 30
+    },
+    "api/health.js": {
+      "maxDuration": 10
+    },
+    "api/user-context.js": {
+      "maxDuration": 15
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "Soma",
+    "slug": "soma-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.soma.mobile",
+      "buildNumber": "25",
+      "infoPlist": {
+        "NSHealthShareUsageDescription": "Soma needs access to your health data to provide personalized health insights and track your progress.",
+        "NSHealthUpdateUsageDescription": "Soma needs to update your health data to track your health metrics and goals.",
+        "NSCameraUsageDescription": "Soma may need camera access for health-related features and documentation.",
+        "NSMicrophoneUsageDescription": "Soma may need microphone access for voice input and health assessments.",
+        "NSLocationWhenInUseUsageDescription": "Soma may need location access to provide location-based health recommendations.",
+        "NSPhotoLibraryUsageDescription": "Soma may need photo library access to save health reports and progress images.",
+        "NSFaceIDUsageDescription": "Soma uses Face ID to securely authenticate you and protect your health data.",
+        "NSUserTrackingUsageDescription": "Soma uses tracking to provide personalized health recommendations and improve your experience.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "entitlements": {
+        "com.apple.developer.healthkit": true,
+        "com.apple.developer.healthkit.access": [
+          "health-records"
+        ],
+        "com.apple.developer.healthkit.background-delivery": true
+      }
+    },
+    "android": {
+      "package": "com.soma.mobile",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.ACTIVITY_RECOGNITION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {},
+    "scheme": "soma",
+    "plugins": [
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Soma needs access to your health data to provide personalized health insights and track your progress.",
+          "NSHealthUpdateUsageDescription": "Soma needs to update your health data to track your health metrics and goals."
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "207259fb-de51-4482-a1c9-4f568d36e746"
+      }
+    }
+  }
+}

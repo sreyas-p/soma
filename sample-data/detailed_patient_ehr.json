@@ -1,0 +1,719 @@
+{
+  "patient": {
+    "patient_id": "P00001",
+    "medical_record_number": "MRN-2024-78432",
+    "demographics": {
+      "name": {
+        "first": "Alexander",
+        "middle": "James",
+        "last": "Hill",
+        "preferred": "Alex"
+      },
+      "date_of_birth": "2004-03-31",
+      "age": 21,
+      "gender": "Male",
+      "sex_assigned_at_birth": "Male",
+      "pronouns": "he/him",
+      "race": "White",
+      "ethnicity": "Non-Hispanic",
+      "marital_status": "Single",
+      "language": "English",
+      "address": {
+        "street": "819 Johnson Course",
+        "apt": "Apt 4B",
+        "city": "Santa Barbara",
+        "state": "CA",
+        "zip": "93101",
+        "county": "Santa Barbara"
+      },
+      "phone": {
+        "mobile": "(805) 555-1234",
+        "home": "(805) 555-5678"
+      },
+      "email": "alex.hill@ucsb.edu",
+      "emergency_contact": {
+        "name": "Margaret Hill",
+        "relationship": "Mother",
+        "phone": "(805) 555-9012"
+      },
+      "insurance": {
+        "primary": {
+          "provider": "Blue Cross Blue Shield",
+          "policy_number": "BCB-78432156",
+          "group_number": "UCSB-STU-2024",
+          "subscriber": "Margaret Hill",
+          "relationship": "Dependent"
+        }
+      },
+      "employer_school": "UC Santa Barbara - Junior, Computer Science"
+    }
+  },
+  
+  "medical_history": {
+    "chief_complaint": "Routine follow-up and anxiety management",
+    "history_of_present_illness": "21-year-old male college student presenting for routine follow-up. Patient reports overall good health but has been experiencing increased anxiety related to academic pressures. Also reports occasional heartburn after eating spicy foods. Denies chest pain, shortness of breath, or palpitations. Sleep has been irregular due to study schedule.",
+    
+    "past_medical_history": [
+      {
+        "condition": "Generalized Anxiety Disorder",
+        "icd10": "F41.1",
+        "onset_date": "2023-09-15",
+        "status": "Active",
+        "notes": "Diagnosed during freshman year of college. Well-controlled on current medication."
+      },
+      {
+        "condition": "Gastroesophageal Reflux Disease (GERD)",
+        "icd10": "K21.0",
+        "onset_date": "2024-06-01",
+        "status": "Active",
+        "notes": "Mild symptoms, managed with lifestyle modifications and PRN antacids."
+      },
+      {
+        "condition": "Seasonal Allergic Rhinitis",
+        "icd10": "J30.2",
+        "onset_date": "2015-03-01",
+        "status": "Active",
+        "notes": "Symptoms worse in spring. Uses OTC antihistamines as needed."
+      },
+      {
+        "condition": "Concussion",
+        "icd10": "S06.0X0A",
+        "onset_date": "2019-11-15",
+        "status": "Resolved",
+        "notes": "Sustained during high school soccer. Full recovery with no residual symptoms."
+      }
+    ],
+    
+    "surgical_history": [
+      {
+        "procedure": "Appendectomy",
+        "date": "2018-07-22",
+        "surgeon": "Dr. Sarah Chen",
+        "facility": "Cottage Hospital",
+        "notes": "Laparoscopic approach. Uncomplicated recovery."
+      },
+      {
+        "procedure": "Wisdom Teeth Extraction",
+        "date": "2022-06-15",
+        "surgeon": "Dr. Michael Torres, DDS",
+        "facility": "Santa Barbara Oral Surgery",
+        "notes": "All four impacted wisdom teeth removed under general anesthesia."
+      }
+    ],
+    
+    "family_history": [
+      {
+        "relative": "Father",
+        "age": 52,
+        "conditions": ["Hypertension", "Type 2 Diabetes Mellitus"],
+        "notes": "Diagnosed with HTN at age 45, DM at age 48. Well-controlled on medications."
+      },
+      {
+        "relative": "Mother",
+        "age": 50,
+        "conditions": ["Hypothyroidism", "Generalized Anxiety Disorder"],
+        "notes": "Anxiety runs in maternal side of family."
+      },
+      {
+        "relative": "Paternal Grandfather",
+        "age_at_death": 71,
+        "cause_of_death": "Myocardial Infarction",
+        "conditions": ["Coronary Artery Disease", "Hypertension"]
+      },
+      {
+        "relative": "Maternal Grandmother",
+        "age": 78,
+        "conditions": ["Breast Cancer (survivor)", "Osteoporosis"],
+        "notes": "Breast cancer diagnosed at 62, in remission after treatment."
+      },
+      {
+        "relative": "Sister",
+        "age": 18,
+        "conditions": ["Asthma"],
+        "notes": "Mild intermittent asthma since childhood."
+      }
+    ],
+    
+    "social_history": {
+      "tobacco": {
+        "status": "Never smoker",
+        "pack_years": 0
+      },
+      "alcohol": {
+        "status": "Social drinker",
+        "frequency": "1-2 drinks per week on weekends",
+        "type": "Beer, occasional wine"
+      },
+      "recreational_drugs": {
+        "status": "Denies current use",
+        "history": "Tried marijuana once in high school, no ongoing use"
+      },
+      "caffeine": {
+        "status": "Regular use",
+        "amount": "2-3 cups of coffee daily"
+      },
+      "exercise": {
+        "frequency": "3-4 times per week",
+        "type": "Weight training, running, intramural soccer",
+        "duration": "45-60 minutes per session"
+      },
+      "diet": {
+        "type": "Standard American diet",
+        "notes": "Eats at university dining halls. Trying to increase protein intake for fitness goals."
+      },
+      "sleep": {
+        "average_hours": "6-7 hours",
+        "quality": "Variable, worse during exam periods",
+        "notes": "Occasional insomnia related to anxiety"
+      },
+      "occupation": "Full-time student, part-time research assistant",
+      "living_situation": "Lives in off-campus apartment with 2 roommates",
+      "sexual_history": {
+        "active": true,
+        "partners": "Monogamous relationship",
+        "contraception": "Partner uses oral contraceptives",
+        "sti_screening": "Last tested 6 months ago, negative"
+      },
+      "safety": {
+        "seatbelt": "Always",
+        "helmet": "Always when cycling",
+        "firearms_in_home": false
+      }
+    }
+  },
+  
+  "allergies": [
+    {
+      "allergen": "Penicillin",
+      "type": "Medication",
+      "reaction": "Hives, facial swelling",
+      "severity": "Moderate",
+      "onset_date": "2010-03-15",
+      "verified": true
+    },
+    {
+      "allergen": "Shellfish",
+      "type": "Food",
+      "reaction": "Throat tightness, difficulty swallowing",
+      "severity": "Severe",
+      "onset_date": "2016-08-20",
+      "verified": true,
+      "notes": "Carries EpiPen"
+    },
+    {
+      "allergen": "Pollen (grass, tree)",
+      "type": "Environmental",
+      "reaction": "Sneezing, runny nose, itchy eyes",
+      "severity": "Mild",
+      "onset_date": "2015-03-01",
+      "verified": true
+    }
+  ],
+  
+  "medications": {
+    "current": [
+      {
+        "name": "Sertraline (Zoloft)",
+        "dose": "50 mg",
+        "route": "Oral",
+        "frequency": "Once daily in the morning",
+        "indication": "Generalized Anxiety Disorder",
+        "prescriber": "Dr. Emily Watson",
+        "start_date": "2023-10-01",
+        "pharmacy": "CVS Pharmacy - State Street",
+        "refills_remaining": 3
+      },
+      {
+        "name": "Omeprazole (Prilosec)",
+        "dose": "20 mg",
+        "route": "Oral",
+        "frequency": "Once daily before breakfast",
+        "indication": "GERD",
+        "prescriber": "Dr. Robert Martinez",
+        "start_date": "2024-06-15",
+        "pharmacy": "CVS Pharmacy - State Street",
+        "refills_remaining": 2
+      },
+      {
+        "name": "Cetirizine (Zyrtec)",
+        "dose": "10 mg",
+        "route": "Oral",
+        "frequency": "Once daily as needed",
+        "indication": "Seasonal allergies",
+        "prescriber": "Self (OTC)",
+        "start_date": "2020-03-01",
+        "notes": "Uses primarily March-June"
+      },
+      {
+        "name": "Epinephrine Auto-Injector (EpiPen)",
+        "dose": "0.3 mg",
+        "route": "Intramuscular",
+        "frequency": "As needed for anaphylaxis",
+        "indication": "Shellfish allergy - emergency use",
+        "prescriber": "Dr. Robert Martinez",
+        "start_date": "2016-09-01",
+        "notes": "Carries at all times. Expires 2026-03-15."
+      }
+    ],
+    "past": [
+      {
+        "name": "Amoxicillin",
+        "dose": "500 mg",
+        "indication": "Strep throat",
+        "dates": "2017-02-10 to 2017-02-20",
+        "reason_stopped": "Completed course - switched to azithromycin for future due to penicillin allergy development"
+      },
+      {
+        "name": "Ibuprofen",
+        "dose": "600 mg",
+        "indication": "Post-appendectomy pain",
+        "dates": "2018-07-22 to 2018-07-29",
+        "reason_stopped": "Pain resolved"
+      }
+    ]
+  },
+  
+  "immunizations": [
+    {
+      "vaccine": "COVID-19 (Pfizer-BioNTech)",
+      "date": "2024-10-15",
+      "lot_number": "FL1234",
+      "site": "Left deltoid",
+      "administrator": "Student Health Center",
+      "notes": "2024-2025 updated booster"
+    },
+    {
+      "vaccine": "Influenza (Quadrivalent)",
+      "date": "2025-10-01",
+      "lot_number": "FLU2025A",
+      "site": "Left deltoid",
+      "administrator": "Student Health Center"
+    },
+    {
+      "vaccine": "Tdap (Tetanus, Diphtheria, Pertussis)",
+      "date": "2022-08-15",
+      "lot_number": "TD789012",
+      "site": "Right deltoid",
+      "administrator": "Primary Care Physician",
+      "notes": "10-year booster"
+    },
+    {
+      "vaccine": "Meningococcal (MenACWY)",
+      "date": "2022-08-15",
+      "lot_number": "MEN456",
+      "site": "Right deltoid",
+      "administrator": "Primary Care Physician",
+      "notes": "Required for university enrollment"
+    },
+    {
+      "vaccine": "HPV (Gardasil 9)",
+      "date": "2019-06-01",
+      "lot_number": "HPV321",
+      "site": "Left deltoid",
+      "administrator": "Pediatrician",
+      "notes": "Third and final dose of series"
+    },
+    {
+      "vaccine": "MMR (Measles, Mumps, Rubella)",
+      "date": "2005-03-31",
+      "administrator": "Pediatrician",
+      "notes": "Second dose at age 1"
+    },
+    {
+      "vaccine": "Hepatitis B",
+      "date": "2004-09-30",
+      "administrator": "Pediatrician",
+      "notes": "Third dose, series complete"
+    }
+  ],
+  
+  "vital_signs_history": [
+    {
+      "date": "2026-01-10",
+      "time": "10:30 AM",
+      "blood_pressure": "118/76",
+      "heart_rate": 72,
+      "respiratory_rate": 16,
+      "temperature": 98.4,
+      "temperature_unit": "F",
+      "oxygen_saturation": 99,
+      "height": "5'11\"",
+      "height_cm": 180,
+      "weight": "165 lbs",
+      "weight_kg": 74.8,
+      "bmi": 23.0,
+      "pain_scale": 0
+    },
+    {
+      "date": "2025-09-15",
+      "time": "2:15 PM",
+      "blood_pressure": "122/78",
+      "heart_rate": 78,
+      "respiratory_rate": 14,
+      "temperature": 98.6,
+      "temperature_unit": "F",
+      "oxygen_saturation": 98,
+      "weight": "162 lbs",
+      "weight_kg": 73.5,
+      "bmi": 22.6,
+      "pain_scale": 0
+    },
+    {
+      "date": "2025-03-20",
+      "time": "11:00 AM",
+      "blood_pressure": "120/74",
+      "heart_rate": 68,
+      "respiratory_rate": 16,
+      "temperature": 98.2,
+      "temperature_unit": "F",
+      "oxygen_saturation": 99,
+      "weight": "158 lbs",
+      "weight_kg": 71.7,
+      "bmi": 22.0,
+      "pain_scale": 0
+    }
+  ],
+  
+  "lab_results": [
+    {
+      "order_date": "2026-01-10",
+      "collection_date": "2026-01-10",
+      "result_date": "2026-01-11",
+      "ordering_provider": "Dr. Robert Martinez",
+      "panel": "Comprehensive Metabolic Panel (CMP)",
+      "results": [
+        {"test": "Glucose", "value": 92, "unit": "mg/dL", "reference_range": "70-100", "flag": "Normal"},
+        {"test": "BUN", "value": 14, "unit": "mg/dL", "reference_range": "7-20", "flag": "Normal"},
+        {"test": "Creatinine", "value": 1.0, "unit": "mg/dL", "reference_range": "0.7-1.3", "flag": "Normal"},
+        {"test": "Sodium", "value": 140, "unit": "mEq/L", "reference_range": "136-145", "flag": "Normal"},
+        {"test": "Potassium", "value": 4.2, "unit": "mEq/L", "reference_range": "3.5-5.0", "flag": "Normal"},
+        {"test": "Chloride", "value": 102, "unit": "mEq/L", "reference_range": "98-106", "flag": "Normal"},
+        {"test": "CO2", "value": 24, "unit": "mEq/L", "reference_range": "23-29", "flag": "Normal"},
+        {"test": "Calcium", "value": 9.5, "unit": "mg/dL", "reference_range": "8.5-10.5", "flag": "Normal"},
+        {"test": "Total Protein", "value": 7.2, "unit": "g/dL", "reference_range": "6.0-8.3", "flag": "Normal"},
+        {"test": "Albumin", "value": 4.5, "unit": "g/dL", "reference_range": "3.5-5.0", "flag": "Normal"},
+        {"test": "Bilirubin, Total", "value": 0.8, "unit": "mg/dL", "reference_range": "0.1-1.2", "flag": "Normal"},
+        {"test": "Alkaline Phosphatase", "value": 65, "unit": "U/L", "reference_range": "44-147", "flag": "Normal"},
+        {"test": "AST", "value": 22, "unit": "U/L", "reference_range": "10-40", "flag": "Normal"},
+        {"test": "ALT", "value": 28, "unit": "U/L", "reference_range": "7-56", "flag": "Normal"}
+      ]
+    },
+    {
+      "order_date": "2026-01-10",
+      "collection_date": "2026-01-10",
+      "result_date": "2026-01-11",
+      "ordering_provider": "Dr. Robert Martinez",
+      "panel": "Complete Blood Count (CBC)",
+      "results": [
+        {"test": "WBC", "value": 6.8, "unit": "x10^9/L", "reference_range": "4.5-11.0", "flag": "Normal"},
+        {"test": "RBC", "value": 5.2, "unit": "x10^12/L", "reference_range": "4.5-5.5", "flag": "Normal"},
+        {"test": "Hemoglobin", "value": 15.2, "unit": "g/dL", "reference_range": "13.5-17.5", "flag": "Normal"},
+        {"test": "Hematocrit", "value": 45, "unit": "%", "reference_range": "38-50", "flag": "Normal"},
+        {"test": "MCV", "value": 88, "unit": "fL", "reference_range": "80-100", "flag": "Normal"},
+        {"test": "MCH", "value": 29, "unit": "pg", "reference_range": "27-33", "flag": "Normal"},
+        {"test": "MCHC", "value": 34, "unit": "g/dL", "reference_range": "32-36", "flag": "Normal"},
+        {"test": "Platelet Count", "value": 245, "unit": "x10^9/L", "reference_range": "150-400", "flag": "Normal"}
+      ]
+    },
+    {
+      "order_date": "2026-01-10",
+      "collection_date": "2026-01-10",
+      "result_date": "2026-01-11",
+      "ordering_provider": "Dr. Robert Martinez",
+      "panel": "Lipid Panel",
+      "results": [
+        {"test": "Total Cholesterol", "value": 185, "unit": "mg/dL", "reference_range": "<200", "flag": "Normal"},
+        {"test": "HDL Cholesterol", "value": 55, "unit": "mg/dL", "reference_range": ">40", "flag": "Normal"},
+        {"test": "LDL Cholesterol", "value": 110, "unit": "mg/dL", "reference_range": "<100", "flag": "Borderline High"},
+        {"test": "Triglycerides", "value": 95, "unit": "mg/dL", "reference_range": "<150", "flag": "Normal"},
+        {"test": "VLDL", "value": 19, "unit": "mg/dL", "reference_range": "5-40", "flag": "Normal"}
+      ]
+    },
+    {
+      "order_date": "2025-09-15",
+      "collection_date": "2025-09-15",
+      "result_date": "2025-09-16",
+      "ordering_provider": "Dr. Emily Watson",
+      "panel": "Thyroid Panel",
+      "results": [
+        {"test": "TSH", "value": 2.1, "unit": "mIU/L", "reference_range": "0.4-4.0", "flag": "Normal"},
+        {"test": "Free T4", "value": 1.2, "unit": "ng/dL", "reference_range": "0.8-1.8", "flag": "Normal"}
+      ]
+    }
+  ],
+  
+  "encounters": [
+    {
+      "encounter_id": "ENC-2026-001",
+      "date": "2026-01-10",
+      "time": "10:30 AM",
+      "type": "Office Visit - Follow-up",
+      "provider": {
+        "name": "Dr. Robert Martinez, MD",
+        "specialty": "Internal Medicine",
+        "npi": "1234567890"
+      },
+      "facility": {
+        "name": "UCSB Student Health Center",
+        "address": "Student Health Building, UC Santa Barbara, CA 93106"
+      },
+      "chief_complaint": "Routine follow-up, anxiety check, and annual wellness exam",
+      "subjective": "Alex presents for his annual wellness exam and medication follow-up. He reports his anxiety has been well-controlled on current sertraline dose. Notes occasional breakthrough anxiety during finals week but manageable with coping strategies learned in therapy. GERD symptoms have improved with omeprazole - only occasional heartburn when eating late at night. He has been exercising regularly 3-4 times per week with weight training and running. Diet could be improved - eating mostly at dining halls. Sleep remains somewhat irregular, averaging 6-7 hours on weeknights. No new concerns. Denies depression, suicidal ideation, chest pain, palpitations, shortness of breath, abdominal pain, changes in bowel habits, or urinary symptoms.",
+      "objective": {
+        "vitals": {
+          "blood_pressure": "118/76",
+          "heart_rate": 72,
+          "respiratory_rate": 16,
+          "temperature": "98.4°F",
+          "oxygen_saturation": "99%",
+          "weight": "165 lbs",
+          "height": "5'11\"",
+          "bmi": 23.0
+        },
+        "physical_exam": {
+          "general": "Well-developed, well-nourished young male in no acute distress. Alert and oriented x3. Pleasant and cooperative.",
+          "heent": "Normocephalic, atraumatic. Pupils equal, round, reactive to light. TMs clear bilaterally. Oropharynx clear without erythema or exudate.",
+          "neck": "Supple, no lymphadenopathy, no thyromegaly. Full range of motion.",
+          "cardiovascular": "Regular rate and rhythm. Normal S1, S2. No murmurs, rubs, or gallops. No peripheral edema.",
+          "respiratory": "Clear to auscultation bilaterally. No wheezes, rales, or rhonchi. Normal respiratory effort.",
+          "abdomen": "Soft, non-tender, non-distended. Normal bowel sounds. No hepatosplenomegaly. Well-healed laparoscopic appendectomy scars.",
+          "musculoskeletal": "Full range of motion in all extremities. No joint swelling or tenderness. Normal gait.",
+          "skin": "Warm, dry, intact. No rashes or lesions.",
+          "neurological": "Alert and oriented. Cranial nerves II-XII intact. Motor strength 5/5 throughout. Sensation intact. DTRs 2+ and symmetric.",
+          "psychiatric": "Mood euthymic, affect appropriate. Good eye contact. Speech normal rate and rhythm. Thought process linear and goal-directed. No SI/HI."
+        }
+      },
+      "assessment": [
+        {
+          "diagnosis": "Generalized Anxiety Disorder, well-controlled",
+          "icd10": "F41.1",
+          "status": "Stable"
+        },
+        {
+          "diagnosis": "Gastroesophageal Reflux Disease",
+          "icd10": "K21.0",
+          "status": "Improved"
+        },
+        {
+          "diagnosis": "Annual Wellness Examination",
+          "icd10": "Z00.00",
+          "status": "Completed"
+        },
+        {
+          "diagnosis": "Borderline elevated LDL cholesterol",
+          "icd10": "E78.0",
+          "status": "New finding"
+        }
+      ],
+      "plan": [
+        "1. Continue sertraline 50mg daily for anxiety - well-controlled at current dose. PHQ-9 score 4 (minimal depression). GAD-7 score 6 (mild anxiety).",
+        "2. Continue omeprazole 20mg daily for GERD. Reinforce lifestyle modifications: avoid eating 3 hours before bed, limit spicy/acidic foods, elevate head of bed.",
+        "3. Labs ordered: CBC, CMP, Lipid Panel - results pending. Will contact if abnormal.",
+        "4. Discussed LDL cholesterol slightly elevated at 110 (goal <100). Recommend dietary modifications: increase fiber, reduce saturated fat, continue exercise. Recheck lipids in 6 months.",
+        "5. Continue current exercise regimen. Encouraged to maintain protein intake for muscle building goals.",
+        "6. Sleep hygiene counseling provided. Recommend consistent sleep schedule, limit caffeine after 2pm, avoid screens 1 hour before bed.",
+        "7. EpiPen prescription renewed. Reviewed anaphylaxis action plan.",
+        "8. Immunizations up to date. Flu shot administered today.",
+        "9. Return to clinic in 3-4 months or sooner if concerns arise."
+      ],
+      "clinical_note": "Alex is a 21-year-old male presenting for annual wellness exam and medication follow-up. Anxiety well-controlled on sertraline 50mg, GERD improved on omeprazole 20mg. Vitals: BP 118/76, HR 72, Temp 98.4°F, SpO2 99%, BMI 23.0. Physical exam unremarkable. Labs ordered. Plan: Continue current medications, lifestyle counseling for borderline elevated LDL, sleep hygiene education, return in 3-4 months.",
+      "billing": {
+        "cpt_codes": ["99395", "96127"],
+        "icd10_codes": ["Z00.00", "F41.1", "K21.0"]
+      }
+    },
+    {
+      "encounter_id": "ENC-2025-012",
+      "date": "2025-09-15",
+      "time": "2:15 PM",
+      "type": "Office Visit - Follow-up",
+      "provider": {
+        "name": "Dr. Emily Watson, MD",
+        "specialty": "Psychiatry",
+        "npi": "0987654321"
+      },
+      "facility": {
+        "name": "UCSB Counseling & Psychological Services",
+        "address": "Building 599, UC Santa Barbara, CA 93106"
+      },
+      "chief_complaint": "Anxiety medication follow-up",
+      "subjective": "Alex presents for quarterly psychiatric follow-up. Reports anxiety has been well-managed over the summer with fewer stressors. Concerned about upcoming fall quarter academic demands. Currently doing research assistant work which he enjoys. Sleeping better during summer - about 7-8 hours. No side effects from sertraline. Continues to exercise regularly which helps with mood. Denies panic attacks, depression, or suicidal ideation.",
+      "objective": {
+        "vitals": {
+          "blood_pressure": "122/78",
+          "heart_rate": 78,
+          "weight": "162 lbs"
+        },
+        "mental_status_exam": {
+          "appearance": "Well-groomed, appropriate dress",
+          "behavior": "Cooperative, good eye contact",
+          "speech": "Normal rate, rhythm, and volume",
+          "mood": "Good",
+          "affect": "Euthymic, full range, congruent",
+          "thought_process": "Linear, goal-directed",
+          "thought_content": "No delusions, no SI/HI",
+          "perception": "No hallucinations",
+          "cognition": "Alert, oriented x3",
+          "insight": "Good",
+          "judgment": "Good"
+        }
+      },
+      "assessment": [
+        {
+          "diagnosis": "Generalized Anxiety Disorder",
+          "icd10": "F41.1",
+          "status": "Stable on current treatment"
+        }
+      ],
+      "plan": [
+        "1. Continue sertraline 50mg daily - effective at current dose",
+        "2. PHQ-9: 3 (minimal). GAD-7: 5 (mild). Scores stable",
+        "3. Discussed strategies for managing academic stress in upcoming quarter",
+        "4. Encouraged continued exercise and healthy sleep habits",
+        "5. Continue monthly therapy sessions",
+        "6. Return in 3 months. Call sooner if symptoms worsen"
+      ],
+      "clinical_note": "Alex is a 21-year-old male with GAD presenting for medication follow-up. Anxiety well-controlled on sertraline 50mg during summer. Anticipatory anxiety about fall quarter discussed. Mental status exam within normal limits. PHQ-9: 3, GAD-7: 5. Plan: Continue current medication and therapy, coping strategies reviewed."
+    },
+    {
+      "encounter_id": "ENC-2024-089",
+      "date": "2024-09-23",
+      "time": "3:45 PM",
+      "type": "Office Visit - Sick Visit",
+      "provider": {
+        "name": "Dr. Robert Martinez, MD",
+        "specialty": "Internal Medicine",
+        "npi": "1234567890"
+      },
+      "facility": {
+        "name": "UCSB Student Health Center",
+        "address": "Student Health Building, UC Santa Barbara, CA 93106"
+      },
+      "chief_complaint": "Heartburn and acid reflux for 5 days",
+      "subjective": "Alex presents with complaints of burning sensation in chest and throat, worse after meals and when lying down. Started about 5 days ago after eating spicy food at a friend's party. Has been using Tums with minimal relief. Also notes sour taste in mouth in the morning. Denies difficulty swallowing, weight loss, vomiting blood, or black stools. Reports increased stress due to midterms coming up.",
+      "objective": {
+        "vitals": {
+          "blood_pressure": "124/80",
+          "heart_rate": 76,
+          "respiratory_rate": 16,
+          "temperature": "98.6°F",
+          "oxygen_saturation": "99%"
+        },
+        "physical_exam": {
+          "general": "No acute distress",
+          "cardiovascular": "Regular rate and rhythm, no murmurs",
+          "respiratory": "Clear bilaterally",
+          "abdomen": "Soft, mild epigastric tenderness, no rebound or guarding, normal bowel sounds"
+        }
+      },
+      "assessment": [
+        {
+          "diagnosis": "Gastroesophageal Reflux Disease with esophagitis",
+          "icd10": "K21.0",
+          "status": "New diagnosis"
+        }
+      ],
+      "plan": [
+        "1. Start omeprazole 20mg daily, take 30 minutes before breakfast",
+        "2. Lifestyle modifications: avoid eating 3 hours before bed, elevate head of bed 6 inches, avoid trigger foods (spicy, acidic, fatty, caffeine, chocolate, alcohol)",
+        "3. Avoid NSAIDs if possible",
+        "4. If symptoms persist after 4 weeks of treatment, will consider referral to GI for possible endoscopy",
+        "5. Return in 4-6 weeks or sooner if symptoms worsen"
+      ],
+      "clinical_note": "Alex is a 21-year-old male presenting with 5-day history of heartburn and acid reflux symptoms. Vitals: BP 124/80, HR 76, Temp 98.6°F. Abdomen with mild epigastric tenderness. Assessment: GERD. Plan: Start omeprazole 20mg daily, lifestyle modifications counseling, follow up in 4-6 weeks."
+    },
+    {
+      "encounter_id": "ENC-2024-056",
+      "date": "2024-06-19",
+      "time": "9:30 AM",
+      "type": "Office Visit - Sick Visit",
+      "provider": {
+        "name": "Dr. Lisa Chang, MD",
+        "specialty": "Family Medicine",
+        "npi": "1122334455"
+      },
+      "facility": {
+        "name": "UCSB Student Health Center",
+        "address": "Student Health Building, UC Santa Barbara, CA 93106"
+      },
+      "chief_complaint": "Sore throat and difficulty swallowing for 3 days",
+      "subjective": "Alex presents with sore throat that started 3 days ago. Reports pain with swallowing, especially solid foods. Denies fever, cough, runny nose, or ear pain. Roommate had similar symptoms last week. Has been taking ibuprofen with some relief.",
+      "objective": {
+        "vitals": {
+          "blood_pressure": "118/72",
+          "heart_rate": 74,
+          "respiratory_rate": 14,
+          "temperature": "99.2°F",
+          "oxygen_saturation": "99%"
+        },
+        "physical_exam": {
+          "heent": "Pharynx erythematous without exudates. Tonsils 2+ bilaterally without exudates. Tender anterior cervical lymphadenopathy",
+          "respiratory": "Clear bilaterally",
+          "rapid_strep": "Negative"
+        }
+      },
+      "assessment": [
+        {
+          "diagnosis": "Acute viral pharyngitis",
+          "icd10": "J02.9",
+          "status": "Acute"
+        }
+      ],
+      "plan": [
+        "1. Supportive care - rest, hydration, salt water gargles",
+        "2. Continue ibuprofen 400mg every 6 hours as needed for pain (note: patient has no NSAID allergy)",
+        "3. Throat lozenges as needed",
+        "4. Return if fever develops, symptoms worsen, or not improving in 5-7 days"
+      ],
+      "clinical_note": "Alex is a 21-year-old male with 3-day history of sore throat and odynophagia. Low-grade fever at 99.2°F. Pharynx erythematous, rapid strep negative. Assessment: Viral pharyngitis. Plan: Supportive care with rest, fluids, and ibuprofen PRN."
+    }
+  ],
+  
+  "care_team": [
+    {
+      "name": "Dr. Robert Martinez, MD",
+      "role": "Primary Care Physician",
+      "specialty": "Internal Medicine",
+      "phone": "(805) 893-3371",
+      "facility": "UCSB Student Health Center"
+    },
+    {
+      "name": "Dr. Emily Watson, MD",
+      "role": "Psychiatrist",
+      "specialty": "Psychiatry",
+      "phone": "(805) 893-4411",
+      "facility": "UCSB Counseling & Psychological Services"
+    },
+    {
+      "name": "Sarah Thompson, LMFT",
+      "role": "Therapist",
+      "specialty": "Marriage and Family Therapy",
+      "phone": "(805) 893-4411",
+      "facility": "UCSB Counseling & Psychological Services"
+    }
+  ],
+  
+  "health_maintenance": {
+    "last_physical_exam": "2026-01-10",
+    "last_dental_exam": "2025-08-15",
+    "last_eye_exam": "2024-06-01",
+    "colonoscopy_due": "Not yet indicated (age-based screening begins at 45)",
+    "next_appointment": "2026-04-15 - Follow-up with Dr. Martinez"
+  },
+  
+  "advance_directives": {
+    "living_will": false,
+    "healthcare_proxy": false,
+    "dnr": false,
+    "notes": "Patient is young and healthy. Has not completed advance directives. Discussed briefly - patient states he will consider completing in the future."
+  },
+  
+  "document_metadata": {
+    "generated_date": "2026-01-11T00:30:00Z",
+    "last_updated": "2026-01-11T00:30:00Z",
+    "version": "1.0",
+    "format": "FHIR-inspired JSON",
+    "data_source": "Synthetic - Generated for RAG/AI testing",
+    "confidentiality": "DEMO DATA - NOT A REAL PATIENT"
+  }
+}
