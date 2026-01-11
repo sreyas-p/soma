@@ -453,6 +453,215 @@ class RealHealthKitService {
 // Export the service instance
 export const healthKitService = new RealHealthKitService();
 
+/**
+ * Fetch past 7 days of health data from HealthKit, aggregated by day
+ * This is used for the Health Trends graphs
+ */
+export async function fetchPast7DaysHealthData(): Promise<Array<{
+  recordedAt: Date;
+  dataDate: string;
+  steps: number;
+  distance: number;
+  calories: number;
+  heartRate: number | null;
+  weight: number | null;
+  sleep: number | null;
+  workoutMinutes: number;
+  workoutCount: number;
+  mindfulnessMinutes: number;
+}>> {
+  if (Platform.OS !== 'ios') {
+    return [];
+  }
+
+  try {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    console.log('📊 Fetching HealthKit data from', sevenDaysAgo.toISOString(), 'to', now.toISOString());
+
+    // Fetch all metrics in parallel
+    const [stepsData, distanceData, caloriesData, heartRateData, sleepData, workoutData] = await Promise.all([
+      healthKitService.fetchHealthData({
+        type: 'steps',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+      healthKitService.fetchHealthData({
+        type: 'distance',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+      healthKitService.fetchHealthData({
+        type: 'calories',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+      healthKitService.fetchHealthData({
+        type: 'heartRate',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+      healthKitService.fetchHealthData({
+        type: 'sleep',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+      healthKitService.fetchHealthData({
+        type: 'workout',
+        startDate: sevenDaysAgo,
+        endDate: now,
+        limit: 1000,
+      }),
+    ]);
+
+    console.log('📊 Fetched:', {
+      steps: stepsData.length,
+      distance: distanceData.length,
+      calories: caloriesData.length,
+      heartRate: heartRateData.length,
+      sleep: sleepData.length,
+      workouts: workoutData.length,
+    });
+
+    // Group all data by date
+    const dailyData = new Map<string, {
+      dataDate: string;
+      steps: number;
+      distance: number;
+      calories: number;
+      heartRate: number | null;
+      heartRateCount: number;
+      sleep: number | null;
+      workoutMinutes: number;
+      workoutCount: number;
+      mindfulnessMinutes: number;
+    }>();
+
+    // Initialize all 7 days
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+      const dateKey = date.toISOString().split('T')[0];
+      
+      dailyData.set(dateKey, {
+        dataDate: dateKey,
+        steps: 0,
+        distance: 0,
+        calories: 0,
+        heartRate: null,
+        heartRateCount: 0,
+        sleep: null,
+        workoutMinutes: 0,
+        workoutCount: 0,
+        mindfulnessMinutes: 0,
+      });
+    }
+
+    // Aggregate steps
+    stepsData.forEach((sample) => {
+      const dateKey = new Date(sample.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        day.steps += sample.value;
+      }
+    });
+
+    // Aggregate distance (convert to meters)
+    distanceData.forEach((sample) => {
+      const dateKey = new Date(sample.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        // Distance might be in different units, convert to meters
+        let meters = sample.value;
+        if (sample.unit === 'mi') meters = sample.value * 1609.34;
+        else if (sample.unit === 'km') meters = sample.value * 1000;
+        day.distance += meters;
+      }
+    });
+
+    // Aggregate calories
+    caloriesData.forEach((sample) => {
+      const dateKey = new Date(sample.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        day.calories += sample.value;
+      }
+    });
+
+    // Average heart rate
+    heartRateData.forEach((sample) => {
+      const dateKey = new Date(sample.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        if (day.heartRate === null) {
+          day.heartRate = sample.value;
+          day.heartRateCount = 1;
+        } else {
+          day.heartRate = (day.heartRate * day.heartRateCount + sample.value) / (day.heartRateCount + 1);
+          day.heartRateCount++;
+        }
+      }
+    });
+
+    // Sleep (take longest sleep session per day)
+    sleepData.forEach((sample) => {
+      const dateKey = new Date(sample.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        // Sleep is typically in hours, take the maximum for the day
+        const hours = sample.value;
+        if (day.sleep === null || hours > day.sleep) {
+          day.sleep = hours;
+        }
+      }
+    });
+
+    // Aggregate workouts
+    workoutData.forEach((workout) => {
+      const dateKey = new Date(workout.startDate).toISOString().split('T')[0];
+      const day = dailyData.get(dateKey);
+      if (day) {
+        // Workout duration is in seconds, convert to minutes
+        const minutes = workout.value / 60;
+        day.workoutMinutes += minutes;
+        day.workoutCount += 1;
+      }
+    });
+
+    // Convert to array and sort by date ascending
+    const result = Array.from(dailyData.values())
+      .map(day => ({
+        recordedAt: new Date(day.dataDate),
+        dataDate: day.dataDate,
+        steps: Math.round(day.steps),
+        distance: Math.round(day.distance),
+        calories: Math.round(day.calories),
+        heartRate: day.heartRate ? Math.round(day.heartRate) : null,
+        weight: null,
+        sleep: day.sleep ? Math.round(day.sleep * 10) / 10 : null,
+        workoutMinutes: Math.round(day.workoutMinutes),
+        workoutCount: day.workoutCount,
+        mindfulnessMinutes: 0, // Not fetched yet
+      }))
+      .sort((a, b) => new Date(a.dataDate).getTime() - new Date(b.dataDate).getTime());
+
+    console.log('📊 Aggregated to', result.length, 'days of data');
+    return result;
+  } catch (error) {
+    console.error('Error fetching past 7 days HealthKit data:', error);
+    return [];
+  }
+}
+
 // Export convenience functions that use the service
 export const requestHealthKitPermissions = async (): Promise<boolean> => {
   return healthKitService.requestPermissions();

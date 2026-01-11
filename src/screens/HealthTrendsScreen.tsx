@@ -22,6 +22,8 @@ import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerParamList } from '@/navigation/types';
 import { healthDataSyncService } from '@/services/healthDataSync';
+import { fetchPast7DaysHealthData } from '@/services/healthKit';
+import { useHealthKit } from '@/hooks/useHealthKit';
 import { useAuth } from '@/contexts/AuthContext';
 import { cleanAIResponse } from '@/utils/cleanAIResponse';
 
@@ -120,6 +122,7 @@ const METRICS: MetricConfig[] = [
 export const HealthTrendsScreen: React.FC = () => {
   const { theme } = useTheme();
   const { user } = useAuth();
+  const { isConnected: isHealthKitConnected } = useHealthKit();
   const navigation = useNavigation<HealthTrendsScreenNavigationProp>();
   const scrollViewRef = useRef<ScrollView>(null);
   const chatScrollRef = useRef<ScrollView>(null);
@@ -140,19 +143,70 @@ export const HealthTrendsScreen: React.FC = () => {
 
   const fetchHistory = useCallback(async () => {
     try {
-      const data = await healthDataSyncService.fetchHealthDataHistory({
-        daysBack: timeRange,
-        limit: timeRange,
-      });
-      // Sort by date ascending for charts
-      const sortedData = data.sort((a, b) => 
-        new Date(a.dataDate).getTime() - new Date(b.dataDate).getTime()
-      );
-      setHistoryData(sortedData);
+      let data: HistoryData[] = [];
+      
+      // Try to fetch from HealthKit first (if connected)
+      if (isHealthKitConnected) {
+        console.log('📊 Fetching data from Apple HealthKit...');
+        try {
+          const healthKitData = await fetchPast7DaysHealthData();
+          if (healthKitData.length > 0) {
+            data = healthKitData;
+            console.log('📊 Successfully fetched', data.length, 'days from HealthKit');
+          } else {
+            console.log('📊 No HealthKit data, falling back to Supabase');
+          }
+        } catch (healthKitError) {
+          console.error('📊 Error fetching from HealthKit:', healthKitError);
+        }
+      }
+      
+      // Fallback to Supabase if HealthKit not connected or no data
+      if (data.length === 0) {
+        console.log('📊 Fetching data from Supabase...');
+        const supabaseData = await healthDataSyncService.fetchHealthDataHistory({
+          daysBack: timeRange,
+          limit: timeRange * 10,
+        });
+        
+        // Group by date and aggregate
+        const groupedByDate = new Map<string, HistoryData>();
+        
+        supabaseData.forEach((entry) => {
+          const dateKey = entry.dataDate;
+          const existing = groupedByDate.get(dateKey);
+          
+          if (existing) {
+            groupedByDate.set(dateKey, {
+              ...existing,
+              steps: existing.steps + entry.steps,
+              distance: existing.distance + entry.distance,
+              calories: existing.calories + entry.calories,
+              heartRate: existing.heartRate && entry.heartRate 
+                ? Math.round((existing.heartRate + entry.heartRate) / 2)
+                : existing.heartRate || entry.heartRate,
+              sleep: existing.sleep || entry.sleep,
+              workoutMinutes: existing.workoutMinutes + entry.workoutMinutes,
+              workoutCount: existing.workoutCount + entry.workoutCount,
+              mindfulnessMinutes: existing.mindfulnessMinutes + entry.mindfulnessMinutes,
+            });
+          } else {
+            groupedByDate.set(dateKey, entry);
+          }
+        });
+        
+        data = Array.from(groupedByDate.values()).sort((a, b) => 
+          new Date(a.dataDate).getTime() - new Date(b.dataDate).getTime()
+        );
+        
+        console.log('📊 Fetched', data.length, 'days from Supabase');
+      }
+      
+      setHistoryData(data);
       
       // Generate AI insight when data loads
-      if (sortedData.length > 0) {
-        generateAIInsight(sortedData);
+      if (data.length > 0) {
+        generateAIInsight(data);
       }
     } catch (error) {
       console.error('Error fetching health history:', error);
@@ -160,7 +214,7 @@ export const HealthTrendsScreen: React.FC = () => {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [timeRange]);
+  }, [timeRange, isHealthKitConnected]);
 
   useEffect(() => {
     fetchHistory();
@@ -322,21 +376,58 @@ ${avgHR ? `- Average heart rate: ${avgHR} BPM` : ''}
   }, [fetchHistory]);
 
   const getChartData = (metric: MetricConfig) => {
-    const labels = historyData.map((d) => {
+    if (historyData.length === 0) {
+      return {
+        labels: ['No data'],
+        datasets: [{ data: [0] }],
+      };
+    }
+
+    // Map all data points
+    const allLabels = historyData.map((d) => {
       const date = new Date(d.dataDate);
       return `${date.getMonth() + 1}/${date.getDate()}`;
     });
     
-    const data = historyData.map((d) => {
+    const allData = historyData.map((d) => {
       const val = d[metric.key];
       if (val === null || val === undefined) return 0;
       if (metric.key === 'distance') return Number(val) / 1609.34;
       return Number(val);
     });
 
+    // If we have more than 14 data points, sample them for better readability
+    // Otherwise show all points
+    if (allLabels.length > 14) {
+      const step = Math.ceil(allLabels.length / 14);
+      const filteredIndices: number[] = [];
+      
+      // Always include first and last
+      filteredIndices.push(0);
+      
+      // Sample middle points
+      for (let i = step; i < allLabels.length - 1; i += step) {
+        filteredIndices.push(i);
+      }
+      
+      // Always include last
+      if (allLabels.length > 1) {
+        filteredIndices.push(allLabels.length - 1);
+      }
+      
+      // Remove duplicates and sort
+      const uniqueIndices = [...new Set(filteredIndices)].sort((a, b) => a - b);
+      
+      return {
+        labels: uniqueIndices.map(i => allLabels[i]),
+        datasets: [{ data: uniqueIndices.map(i => allData[i]) }],
+      };
+    }
+
+    // Show all data points if 14 or fewer
     return {
-      labels: labels.length > 7 ? labels.filter((_, i) => i % Math.ceil(labels.length / 7) === 0) : labels,
-      datasets: [{ data: data.length > 0 ? data : [0] }],
+      labels: allLabels,
+      datasets: [{ data: allData }],
     };
   };
 
@@ -897,9 +988,110 @@ ${avgHR ? `- Average heart rate: ${avgHR} BPM` : ''}
             </Text>
           </Card>
         ) : (
-          <View style={styles.metricsGrid}>
-            {METRICS.map(renderMetricCard)}
-          </View>
+          <>
+            {/* Full Graphs for Each Metric */}
+            {METRICS.map((metric) => {
+              const chartData = getChartData(metric);
+              const trend = getTrend(metric);
+              const latestValue = getLatestValue(metric);
+              const avgValue = getAverageValue(metric);
+
+              return (
+                <Card 
+                  key={metric.key}
+                  style={[styles.metricGraphCard, { backgroundColor: theme.colors.surface }]}
+                  variant="elevated"
+                >
+                  {/* Metric Header */}
+                  <View style={styles.metricGraphHeader}>
+                    <View style={styles.metricGraphHeaderLeft}>
+                      <View style={[styles.metricIconContainer, { backgroundColor: `${metric.color}20` }]}>
+                        <Ionicons name={metric.icon as any} size={20} color={metric.color} />
+                      </View>
+                      <View style={styles.metricGraphTitleContainer}>
+                        <Text style={[styles.metricGraphTitle, { color: theme.colors.text.primary }]}>
+                          {metric.label}
+                        </Text>
+                        <View style={styles.metricGraphStats}>
+                          <Text style={[styles.metricGraphStat, { color: theme.colors.text.secondary }]}>
+                            Latest: <Text style={{ color: metric.color, fontWeight: '600' }}>{latestValue} {metric.unit}</Text>
+                          </Text>
+                          <Text style={[styles.metricGraphStat, { color: theme.colors.text.secondary }]}>
+                            Avg: <Text style={{ fontWeight: '600' }}>{avgValue} {metric.unit}</Text>
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    {trend.direction !== 'stable' && (
+                      <View style={styles.trendBadgeSmall}>
+                        <Ionicons
+                          name={trend.direction === 'up' ? 'trending-up' : 'trending-down'}
+                          size={14}
+                          color={trend.direction === 'up' ? '#10B981' : '#EF4444'}
+                        />
+                        <Text style={[
+                          styles.trendTextSmall,
+                          { color: trend.direction === 'up' ? '#10B981' : '#EF4444' }
+                        ]}>
+                          {trend.percent.toFixed(0)}%
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* Full Chart */}
+                  {historyData.length > 0 ? (
+                    <LineChart
+                      data={chartData}
+                      width={screenWidth - 64}
+                      height={180}
+                      chartConfig={{
+                        backgroundColor: theme.colors.surface,
+                        backgroundGradientFrom: theme.colors.surface,
+                        backgroundGradientTo: theme.colors.surface,
+                        decimalPlaces: metric.key === 'sleep' ? 1 : 0,
+                        color: () => metric.color,
+                        labelColor: () => theme.colors.text.secondary,
+                        style: { borderRadius: 16 },
+                        propsForDots: {
+                          r: '4',
+                          strokeWidth: '2',
+                          stroke: metric.color,
+                        },
+                        propsForBackgroundLines: {
+                          strokeDasharray: '',
+                          stroke: theme.colors.border,
+                          strokeOpacity: 0.3,
+                        },
+                      }}
+                      bezier
+                      style={styles.metricGraphChart}
+                      fromZero
+                    />
+                  ) : (
+                    <View style={styles.noDataContainer}>
+                      <Ionicons name="analytics-outline" size={32} color={theme.colors.text.tertiary} />
+                      <Text style={[styles.noDataText, { color: theme.colors.text.tertiary }]}>
+                        No data available
+                      </Text>
+                    </View>
+                  )}
+
+                  {/* Tap to expand hint */}
+                  <TouchableOpacity
+                    style={styles.expandHint}
+                    onPress={() => setSelectedMetric(metric)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[styles.expandHintText, { color: theme.colors.text.tertiary }]}>
+                      Tap for detailed breakdown
+                    </Text>
+                    <Ionicons name="chevron-forward" size={14} color={theme.colors.text.tertiary} />
+                  </TouchableOpacity>
+                </Card>
+              );
+            })}
+          </>
         )}
       </ScrollView>
 
@@ -1281,5 +1473,70 @@ const styles = StyleSheet.create({
   dayValue: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  // Metric Graph Cards
+  metricGraphCard: {
+    marginHorizontal: 16,
+    marginBottom: 20,
+    padding: 20,
+    borderRadius: 16,
+  },
+  metricGraphHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  metricGraphHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  metricGraphTitleContainer: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  metricGraphTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+  metricGraphStats: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  metricGraphStat: {
+    fontSize: 12,
+  },
+  trendBadgeSmall: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0,0,0,0.05)',
+  },
+  trendTextSmall: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  metricGraphChart: {
+    borderRadius: 16,
+    marginLeft: -16,
+    marginRight: -16,
+  },
+  expandHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+    gap: 4,
+  },
+  expandHintText: {
+    fontSize: 12,
   },
 });
