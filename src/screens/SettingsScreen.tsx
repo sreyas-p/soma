@@ -14,6 +14,7 @@ import {
   Modal,
   TextInput,
   KeyboardAvoidingView,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/theme';
@@ -115,20 +116,54 @@ export const SettingsScreen: React.FC = () => {
         await syncHealthData();
         await loadHealthSummary();
       } else {
+        // Check if this is a first-time request or previously denied
+        const wasDeniedBefore = !isConnected && connectionStatus === 'disconnected';
+        
         Alert.alert(
-          'Connection Issue',
-          'Could not verify HealthKit access. Please check your settings.',
-          [{ text: 'OK' }]
+          wasDeniedBefore ? 'Permission Denied' : 'Permission Required',
+          wasDeniedBefore 
+            ? 'HealthKit permissions were previously denied. To enable:\n\n1. Open Settings\n2. Go to Privacy & Security\n3. Tap Health\n4. Tap Soma\n5. Enable all health data types\n\nThen return here and try again.'
+            : 'HealthKit access is required. Please allow access when prompted, or enable it manually in:\n\nSettings → Privacy & Security → Health → Soma',
+          [
+            { text: 'Cancel' },
+            { 
+              text: 'Open Settings', 
+              onPress: () => {
+                if (Platform.OS === 'ios') {
+                  // Open iOS Settings app to the app's settings page
+                  Linking.openURL('app-settings:');
+                }
+              },
+              style: 'default'
+            }
+          ]
         );
       }
     } catch (err: any) {
-      Alert.alert('Connection Error', `Error: ${err?.message || 'Unknown'}`);
+      console.error('HealthKit connection error:', err);
+      Alert.alert(
+        'Connection Error', 
+        `Error: ${err?.message || 'Unknown'}\n\nIf permissions were denied, go to:\nSettings → Privacy & Security → Health → Soma`,
+        [
+          { text: 'OK' },
+          { 
+            text: 'Open Settings', 
+            onPress: () => {
+              if (Platform.OS === 'ios') {
+                Linking.openURL('app-settings:');
+              }
+            }
+          }
+        ]
+      );
     }
   };
 
   const handleSyncNow = async () => {
     try {
+      console.log('🔄 Manual sync triggered');
       const syncResult = await healthDataSyncService.syncHealthData();
+      console.log('🔄 Sync result:', JSON.stringify(syncResult, null, 2));
       
       if (syncResult.success) {
         const summary = await healthDataSyncService.getDailySummary();
@@ -138,8 +173,10 @@ export const SettingsScreen: React.FC = () => {
         
         if (!syncResult.supabaseStorageEnabled) {
           message += '\n\n⚠️ Cloud sync disabled (local account)';
+        } else if (syncResult.historyEntrySaved) {
+          message += '\n\n✅ Synced to cloud + history saved';
         } else {
-          message += '\n\n✅ Synced to cloud';
+          message += '\n\n⚠️ History failed: ' + (syncResult.historyError || 'Unknown error');
         }
         
         Alert.alert('Sync Complete', message);
@@ -147,6 +184,7 @@ export const SettingsScreen: React.FC = () => {
         Alert.alert('Sync Issue', syncResult.error || 'Unknown error');
       }
     } catch (error) {
+      console.error('🔄 Sync error:', error);
       Alert.alert('Sync Failed', `Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };

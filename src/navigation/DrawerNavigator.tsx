@@ -22,18 +22,20 @@ import { DrawerParamList } from './types';
 import {
   HomeScreen,
   HardwareConnectionScreen,
+  HealthTrendsScreen,
   InsightsScreen,
   DailyChecklistScreen,
   MyJourneyScreen,
   SettingsScreen,
   ConnectedDevicesScreen,
+  FoodScannerScreen,
   // FamilyScreen, // Temporarily hidden from menu
 } from '@/screens';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const { width: screenWidth } = Dimensions.get('window');
 
-// Navigation items with icons only - Only showing 2 main pages
+// Navigation items with icons only - Main pages shown in menu
 // The checklist is now the home page with embedded AI agents
 // Apple Health is now integrated into Settings page
 // REMOVED FROM MENU (but still accessible programmatically):
@@ -46,6 +48,8 @@ const { width: screenWidth } = Dimensions.get('window');
 // - Family: Family (already hidden)
 const drawerItems = [
   { name: 'DailyChecklist', icon: 'checkmark-circle', label: 'My Checklist' },
+  { name: 'FoodScanner', icon: 'scan', label: 'Food Scanner' },
+  { name: 'HealthTrends', icon: 'analytics', label: 'Health Trends' },
   { name: 'Settings', icon: 'settings', label: 'Settings' },
 ] as const;
 
@@ -492,6 +496,8 @@ export const DrawerNavigator: React.FC = () => {
     >
       {/* DailyChecklist is now the default home page with embedded AI agents */}
       <Drawer.Screen name="DailyChecklist" component={DailyChecklistScreen} />
+      <Drawer.Screen name="FoodScanner" component={FoodScannerScreen} />
+      <Drawer.Screen name="HealthTrends" component={HealthTrendsScreen} />
       <Drawer.Screen name="ConnectedDevices" component={ConnectedDevicesScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
       {/* Hidden pages - accessible programmatically but not in menu */}

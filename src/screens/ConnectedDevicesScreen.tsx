@@ -109,8 +109,10 @@ export const ConnectedDevicesScreen: React.FC = () => {
 
   const handleSyncNow = async () => {
     try {
+      console.log('🔄 Manual sync triggered from Connected Devices');
       // Get detailed sync result from the service
       const syncResult = await healthDataSyncService.syncHealthData();
+      console.log('🔄 Sync result:', JSON.stringify(syncResult, null, 2));
       
       if (syncResult.success) {
         const summary = await healthDataSyncService.getDailySummary();
@@ -121,8 +123,10 @@ export const ConnectedDevicesScreen: React.FC = () => {
         
         if (!syncResult.supabaseStorageEnabled) {
           message += '\n\n⚠️ Cloud sync disabled (local account).\nSign in with email to enable cloud backup.';
+        } else if (syncResult.historyEntrySaved) {
+          message += `\n\n✅ ${syncResult.dataCount || 0} records synced + history saved`;
         } else {
-          message += `\n\n✅ ${syncResult.dataCount || 0} records synced to cloud`;
+          message += `\n\n⚠️ ${syncResult.dataCount || 0} records synced (history failed)`;
         }
         
         Alert.alert('Sync Complete', message, [{ text: 'OK' }]);
@@ -130,6 +134,7 @@ export const ConnectedDevicesScreen: React.FC = () => {
         Alert.alert('Sync Issue', syncResult.error || 'Unknown error');
       }
     } catch (error) {
+      console.error('🔄 Sync error:', error);
       Alert.alert('Sync Failed', `Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };

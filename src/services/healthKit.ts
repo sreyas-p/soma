@@ -107,11 +107,77 @@ class RealHealthKitService {
         QuantityTypes.bodyMass,
       ];
 
-      // Note: requestAuthorization returns true if the dialog was shown,
-      // false if permissions were already determined (granted or denied).
-      // This does NOT indicate whether access was granted!
-      await requestAuthorization(readPermissions as any, writePermissions as any);
+      console.log('HealthKit: Calling requestAuthorization with', readPermissions.length, 'read permissions');
+      console.log('HealthKit: Read permissions:', readPermissions);
+      console.log('HealthKit: Write permissions:', writePermissions);
+      
+      // Note: requestAuthorization takes a single object with toRead and toShare properties
+      // It returns true if the dialog was shown, false if permissions were already determined
+      let dialogShown = false;
+      let authError: any = null;
+      
+      try {
+        console.log('HealthKit: About to call requestAuthorization...');
+        
+        // Call with correct signature: single object with toRead and toShare
+        const result = await requestAuthorization({
+          toRead: readPermissions as any,
+          toShare: writePermissions as any,
+        });
+        
+        console.log('HealthKit: requestAuthorization returned:', result);
+        console.log('HealthKit: Result type:', typeof result);
+        
+        // The function returns true if dialog was shown, false otherwise
+        dialogShown = result === true;
+        
+        if (!dialogShown) {
+          console.warn('HealthKit: ⚠️ Dialog was NOT shown!');
+          console.warn('HealthKit: This usually means:');
+          console.warn('  1. Permissions were already requested before (granted or denied)');
+          console.warn('  2. HealthKit capability not enabled in Xcode');
+          console.warn('  3. Info.plist missing NSHealthShareUsageDescription');
+          console.warn('  4. App needs to be rebuilt with HealthKit capability');
+        } else {
+          console.log('HealthKit: ✅ Permission dialog was shown to user');
+        }
+      } catch (error: any) {
+        authError = error;
+        console.error('HealthKit: ❌ requestAuthorization threw error:', error);
+        console.error('HealthKit: Error message:', error?.message);
+        console.error('HealthKit: Error code:', error?.code);
+        console.error('HealthKit: Error name:', error?.name);
+        
+        // If there's an error, it might still work, but log it
+        // Some libraries throw errors even on success
+        if (error?.message?.includes('authorization') || error?.message?.includes('permission')) {
+          console.error('HealthKit: This looks like an authorization error - check Xcode capability');
+        }
+      }
+      
       console.log('HealthKit: requestAuthorization completed');
+      console.log('HealthKit: Dialog shown:', dialogShown);
+      console.log('HealthKit: Had error:', !!authError);
+      
+      // Always wait a bit - iOS needs time to show the dialog
+      if (dialogShown) {
+        console.log('HealthKit: Waiting for user to respond to permission dialog...');
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait longer if dialog was shown
+      } else {
+        console.log('HealthKit: Dialog was not shown, waiting briefly...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      // If dialog wasn't shown and we got an error, throw it so the caller knows
+      if (!dialogShown && authError) {
+        throw new Error(
+          `HealthKit permission dialog was not shown. This usually means:\n` +
+          `1. HealthKit capability not enabled in Xcode\n` +
+          `2. App needs to be rebuilt\n` +
+          `3. Permissions were previously denied\n\n` +
+          `Error: ${authError?.message || 'Unknown error'}`
+        );
+      }
 
       // The only way to know if we have access is to try to read data
       // If we can read, permissions are granted
@@ -127,6 +193,14 @@ class RealHealthKitService {
         return true;
       } else {
         console.log('HealthKit: Access verification failed - no permissions');
+        
+        // If dialog wasn't shown and we don't have access, permissions were likely denied before
+        if (!dialogShown) {
+          console.log('HealthKit: Permission dialog was not shown and access is denied.');
+          console.log('HealthKit: This usually means permissions were previously denied.');
+          console.log('HealthKit: User must enable permissions in Settings → Privacy & Security → Health → Soma');
+        }
+        
         return false;
       }
     } catch (error) {
@@ -162,8 +236,15 @@ class RealHealthKitService {
       // (even if samples is empty - that just means no data)
       console.log('HealthKit: verifyAccess succeeded, samples:', samples.length);
       return true;
-    } catch (error) {
-      console.log('HealthKit: verifyAccess failed:', error);
+    } catch (error: any) {
+      const errorMessage = error?.message || String(error);
+      console.log('HealthKit: verifyAccess failed:', errorMessage);
+      
+      // Check for specific authorization errors
+      if (errorMessage.includes('authorization') || errorMessage.includes('permission') || errorMessage.includes('denied')) {
+        console.log('HealthKit: Authorization denied - user needs to enable in Settings');
+      }
+      
       return false;
     }
   }

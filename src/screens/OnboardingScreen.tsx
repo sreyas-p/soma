@@ -136,6 +136,8 @@ export const OnboardingScreen: React.FC = () => {
   const [parsedEHR, setParsedEHR] = useState<ParsedEHRData | null>(null);
   const [isParsingEHR, setIsParsingEHR] = useState(false);
   const [ehrError, setEhrError] = useState<string | null>(null);
+  const [showPasteModal, setShowPasteModal] = useState(false);
+  const [pasteJsonText, setPasteJsonText] = useState('');
   
   // Free-form goals state
   const [freeFormGoals, setFreeFormGoals] = useState('');
@@ -358,21 +360,80 @@ export const OnboardingScreen: React.FC = () => {
   const handlePickEHRFile = async () => {
     try {
       setEhrError(null);
+      
       const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/json', 'text/plain'],
+        type: ['application/json', 'text/plain', '*/*'],
         copyToCacheDirectory: true,
       });
 
+      console.log('Document picker result:', JSON.stringify(result, null, 2));
+
       if (result.canceled) {
+        return;
+      }
+
+      if (!result.assets || result.assets.length === 0) {
+        setEhrError('No file was selected. Please try again.');
         return;
       }
 
       setEhrFile(result);
       setIsParsingEHR(true);
 
-      // Read the file content
-      const fileUri = result.assets[0].uri;
-      const fileContent = await FileSystem.readAsStringAsync(fileUri);
+      const asset = result.assets[0];
+      console.log('Selected file:', asset.name, 'URI:', asset.uri, 'Size:', asset.size);
+      
+      let fileContent: string | null = null;
+      
+      // First, try to copy the file to our document directory
+      const fileName = asset.name || 'ehr-upload.json';
+      const destUri = FileSystem.documentDirectory + fileName;
+      
+      try {
+        // Copy file to app's document directory where we have full access
+        console.log('Copying file to:', destUri);
+        await FileSystem.copyAsync({
+          from: asset.uri,
+          to: destUri,
+        });
+        console.log('File copied successfully');
+        
+        // Now read from our local copy
+        fileContent = await FileSystem.readAsStringAsync(destUri, {
+          encoding: FileSystem.EncodingType.UTF8,
+        });
+        console.log('Successfully read file, length:', fileContent.length);
+        
+        // Clean up the copied file
+        await FileSystem.deleteAsync(destUri, { idempotent: true });
+      } catch (copyError: any) {
+        console.log('Copy approach failed:', copyError?.message);
+        
+        // Fallback: try reading directly with different URI formats
+        const urisToTry = [
+          asset.uri,
+          decodeURIComponent(asset.uri),
+          asset.uri.replace('file://', ''),
+        ];
+        
+        for (const uri of urisToTry) {
+          try {
+            console.log('Trying direct read from:', uri);
+            fileContent = await FileSystem.readAsStringAsync(uri, {
+              encoding: FileSystem.EncodingType.UTF8,
+            });
+            console.log('Successfully read file, length:', fileContent.length);
+            break;
+          } catch (readError: any) {
+            console.log('Failed to read from', uri, ':', readError?.message);
+          }
+        }
+      }
+      
+      if (!fileContent) {
+        setEhrError('Could not access the selected file. Please ensure the file is stored locally on your device (not in iCloud) and try again.');
+        return;
+      }
       
       try {
         const ehrJson = JSON.parse(fileContent);
@@ -387,9 +448,39 @@ export const OnboardingScreen: React.FC = () => {
         console.error('EHR parse error:', parseError);
         setEhrError('Invalid JSON format. Please upload a valid EHR JSON file.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Document picker error:', error);
-      setEhrError('Failed to read the file. Please try again.');
+      const errorMessage = error?.message || String(error);
+      setEhrError(`Failed to read the file: ${errorMessage}`);
+    } finally {
+      setIsParsingEHR(false);
+    }
+  };
+
+  // Handle pasted JSON content
+  const handlePasteJson = () => {
+    if (!pasteJsonText.trim()) {
+      setEhrError('Please paste your JSON content first.');
+      return;
+    }
+
+    setIsParsingEHR(true);
+    setEhrError(null);
+
+    try {
+      const ehrJson = JSON.parse(pasteJsonText);
+      const parsed = parseEHRData(ehrJson);
+
+      if (parsed) {
+        applyParsedEHRData(parsed);
+        setShowPasteModal(false);
+        setPasteJsonText('');
+      } else {
+        setEhrError('Unable to parse the JSON. Please ensure it matches the expected EHR format.');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      setEhrError('Invalid JSON format. Please check your JSON and try again.');
     } finally {
       setIsParsingEHR(false);
     }
@@ -658,6 +749,60 @@ export const OnboardingScreen: React.FC = () => {
               </TouchableOpacity>
             )}
           </View>
+
+          {/* Alternative: Paste JSON */}
+          <TouchableOpacity
+            style={[styles.pasteJsonButton, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border.light }]}
+            onPress={() => setShowPasteModal(true)}
+          >
+            <Ionicons name="clipboard-outline" size={24} color={theme.colors.primary} />
+            <View style={{ marginLeft: 12, flex: 1 }}>
+              <Text style={[styles.pasteJsonButtonTitle, { color: theme.colors.text.primary }]}>
+                Paste JSON Instead
+              </Text>
+              <Text style={[styles.pasteJsonButtonSubtitle, { color: theme.colors.text.tertiary }]}>
+                Copy JSON content and paste it here
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={theme.colors.text.tertiary} />
+          </TouchableOpacity>
+
+          {/* Paste JSON Modal */}
+          <Modal visible={showPasteModal} animationType="slide" presentationStyle="pageSheet">
+            <SafeAreaView style={[styles.pasteModalContainer, { backgroundColor: theme.colors.background }]}>
+              <View style={styles.pasteModalHeader}>
+                <TouchableOpacity onPress={() => { setShowPasteModal(false); setPasteJsonText(''); setEhrError(null); }}>
+                  <Text style={[styles.pasteModalCancel, { color: theme.colors.primary }]}>Cancel</Text>
+                </TouchableOpacity>
+                <Text style={[styles.pasteModalTitle, { color: theme.colors.text.primary }]}>Paste JSON</Text>
+                <TouchableOpacity onPress={handlePasteJson} disabled={!pasteJsonText.trim()}>
+                  <Text style={[styles.pasteModalDone, { color: pasteJsonText.trim() ? theme.colors.primary : theme.colors.text.tertiary }]}>Import</Text>
+                </TouchableOpacity>
+              </View>
+              
+              {ehrError && (
+                <View style={[styles.pasteModalError, { backgroundColor: theme.colors.semantic.error + '15' }]}>
+                  <Ionicons name="alert-circle" size={20} color={theme.colors.semantic.error} />
+                  <Text style={[styles.pasteModalErrorText, { color: theme.colors.semantic.error }]}>{ehrError}</Text>
+                </View>
+              )}
+              
+              <TextInput
+                style={[styles.pasteJsonInput, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border.light, color: theme.colors.text.primary }]}
+                placeholder="Paste your EHR JSON content here..."
+                placeholderTextColor={theme.colors.text.tertiary}
+                multiline
+                value={pasteJsonText}
+                onChangeText={setPasteJsonText}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              
+              <Text style={[styles.pasteJsonHint, { color: theme.colors.text.tertiary }]}>
+                Open your JSON file in another app, select all text, copy it, and paste here.
+              </Text>
+            </SafeAreaView>
+          </Modal>
 
           <View style={[styles.ehrInfoBox, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border.light }]}>
             <Text style={[styles.ehrInfoTitle, { color: theme.colors.text.primary }]}>
@@ -2617,4 +2762,18 @@ const styles = StyleSheet.create({
   nextButtonText: { color: 'white', fontSize: 16, fontWeight: '600' },
   loadingContainer: { flexDirection: 'row', alignItems: 'center' },
   spinning: { marginRight: 8 },
+  
+  // Paste JSON
+  pasteJsonButton: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 12, borderWidth: 1, marginTop: 16 },
+  pasteJsonButtonTitle: { fontSize: 16, fontWeight: '600' },
+  pasteJsonButtonSubtitle: { fontSize: 13, marginTop: 2 },
+  pasteModalContainer: { flex: 1, padding: 20 },
+  pasteModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  pasteModalCancel: { fontSize: 16 },
+  pasteModalTitle: { fontSize: 17, fontWeight: '600' },
+  pasteModalDone: { fontSize: 16, fontWeight: '600' },
+  pasteModalError: { flexDirection: 'row', alignItems: 'center', padding: 12, borderRadius: 8, marginBottom: 16, gap: 8 },
+  pasteModalErrorText: { fontSize: 14, flex: 1 },
+  pasteJsonInput: { flex: 1, borderWidth: 1, borderRadius: 12, padding: 16, fontSize: 14, textAlignVertical: 'top', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' },
+  pasteJsonHint: { fontSize: 13, marginTop: 12, textAlign: 'center' },
 });

@@ -40,7 +40,7 @@ export const useHealthKit = (): UseHealthKitReturn => {
   const [error, setError] = useState<string | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
 
-  // Check availability on mount
+  // Check availability on mount and start background sync if connected
   useEffect(() => {
     const checkAvailability = async () => {
       const available = Platform.OS === 'ios';
@@ -54,6 +54,12 @@ export const useHealthKit = (): UseHealthKitReturn => {
           const hasAnyPermissions = currentPermissions.some(p => p.read || p.write);
           setIsConnected(hasAnyPermissions);
           setConnectionStatus(hasAnyPermissions ? 'connected' : 'disconnected');
+          
+          // Start background sync if connected
+          if (hasAnyPermissions) {
+            console.log('🔄 HealthKit connected - starting background sync');
+            healthDataSyncService.startBackgroundSync();
+          }
         } catch (error) {
           console.error('Error checking HealthKit availability:', error);
           setConnectionStatus('error');
@@ -62,6 +68,11 @@ export const useHealthKit = (): UseHealthKitReturn => {
     };
 
     checkAvailability();
+    
+    // Cleanup: stop background sync when hook unmounts
+    return () => {
+      healthDataSyncService.stopBackgroundSync();
+    };
   }, []);
 
   const checkPermissions = async () => {
@@ -102,6 +113,11 @@ export const useHealthKit = (): UseHealthKitReturn => {
         // Re-check permissions after successful request
         await checkPermissions();
         setConnectionStatus('connected');
+        
+        // Start background sync after successful connection
+        console.log('🔄 HealthKit permissions granted - starting background sync');
+        healthDataSyncService.startBackgroundSync();
+        
         return true;
       } else {
         setConnectionStatus('error');
@@ -122,6 +138,10 @@ export const useHealthKit = (): UseHealthKitReturn => {
   const disconnect = async () => {
     try {
       setLoading(true);
+      
+      // Stop background sync
+      healthDataSyncService.stopBackgroundSync();
+      
       // Reset local state - HealthKit permissions remain until user revokes
       setPermissions([]);
       setIsConnected(false);

@@ -79,139 +79,89 @@ const API_URL = isOpenRouter
 
 // Citation instruction to append to all prompts - cleaner, more readable format
 const CITATION_INSTRUCTIONS = `
-== RESPONSE STYLE ==
-• Be CONCISE - 2-3 sentences max per point
-• Be SPECIFIC - use actual numbers from user data
-• Be ACTIONABLE - give clear next steps
-
-== DATA REFERENCES ==
-When using user data, naturally weave it into your response:
-• "Your 6,500 daily steps (from health data) is good - let's aim for 8K today"
-• "Since you're working on weight loss (your goal), I suggest..."
-• "Given your high blood pressure (from conditions), avoid high-sodium foods"
-
-Keep references SHORT and NATURAL - don't use technical tags like [REF:...].
-Instead, use parenthetical notes: (from your profile), (today's data), (your goal), (health history)
-
-If asked "why this recommendation?", explain the specific data that informed it.
+== CRITICAL RULES - MUST FOLLOW ==
+1. Talk like a FRIEND texting - casual, warm, human
+2. Keep responses to 2-4 sentences MAX
+3. ONE main point, ONE action suggestion
+4. NO bullet points - just flowing sentences
+5. ABSOLUTELY NEVER use [REF:...], [ref:...], or ANY bracketed tags
+6. ABSOLUTELY NEVER use brackets like [lifestyle_exercise] or [profile]
+7. NEVER say "based on your data", "from your profile", "according to your records"
+8. Just naturally mention things without citing sources
+9. Use contractions (you're, don't, can't) to sound natural
 `;
 
-// Agent System Prompts - concise, data-driven, specific
+// Agent System Prompts - conversational, friendly, human-like
 const AGENT_PROMPTS = {
-  Soma: `You are **Soma**, a health assistant. Be concise, specific, and data-driven.
+  Soma: `You're Soma, a friendly health buddy. Chat like a supportive friend, not a doctor.
 
-== YOUR DATA ==
 {patientContext}
 
 ${CITATION_INSTRUCTIONS}
 
-== RULES ==
-• Keep responses SHORT (3-5 sentences max)
-• Use SPECIFIC numbers from the user's data
-• Give 1-2 actionable steps, not long lists
-• Never diagnose or prescribe - guide only
-• For emergencies: call 911. Mental health crisis: call/text 988
+Keep it to 2-3 sentences. One tip, one encouragement. Be warm!
 
-== EXAMPLE RESPONSE ==
-"Hi [Name]! Your 6,200 steps today (from health data) is solid. To hit your 10K goal, try a 20-min evening walk. Your sleep averaged 6.5 hrs this week - aim for bed by 10:30pm tonight."`,
+Example: "Hey! You hit 6,200 steps today - nice work! Try a quick walk after dinner to push toward 8K. You got this! 💪"`,
 
-  Nutri: `You are **Nutri**, a campus nutrition buddy. Be friendly, concise, and specific.
-
-== RULES ==
-• ONE dining hall per meal (don't make students walk between halls!)
-• Use ONLY foods from today's menu below
-• Check allergies before suggesting foods (from user data)
-• 2-4 items per meal with calories
+  Nutri: `You're Nutri, a chill nutrition friend who knows the campus dining scene.
 
 {nutritionContext}
 
-== USER DATA ==
 {patientContext}
 
 ${CITATION_INSTRUCTIONS}
 
-== RESPONSE FORMAT ==
-Keep it short! Example:
-"🌅 **Breakfast @ Carrillo** (high protein for your muscle goal)
-• Scrambled Eggs - 180 cal, 12g protein
-• Wheat Toast - 140 cal
-• Fruit Cup - 60 cal
-**Total: ~380 cal**"
+Chat casually about food. When suggesting meals, keep it simple:
+- Pick ONE dining hall per meal
+- 2-3 items max with calories
+- Quick and friendly
 
-== JSON (when requested) ==
-{"meals":[{"period":"breakfast","items":[{"name":"Food","diningHall":"Carrillo","calories":200,"protein":10}]}]}`,
+Example: "Carrillo's got some solid options today! Try the grilled chicken (280 cal) with roasted veggies - good protein for your goals. 🍗"
 
-  Luna: `You are **Luna**, a sleep specialist. Be calm, concise, and data-driven.
+For JSON meal plans, return: {"meals":[{"period":"breakfast","items":[{"name":"Food","diningHall":"Carrillo","calories":200}]}]}`,
 
-== USER DATA ==
+  Luna: `You're Luna, a chill sleep coach. Talk like a friend who genuinely cares about their rest.
+
 {patientContext}
 
 ${CITATION_INSTRUCTIONS}
 
-== RULES ==
-• Keep responses SHORT (3-5 sentences)
-• Reference their actual sleep data (hours, quality from health data)
-• Give 1-2 specific bedtime tips
-• Consider their stress level, caffeine, exercise habits
-• Never diagnose sleep disorders - suggest seeing a doctor if needed
+Keep it calming and brief - 2-3 sentences max. One sleep tip at a time.
 
-== EXAMPLE ==
-"You averaged 6.2 hrs sleep this week (from health data) - below your 8hr goal. Tonight: no screens after 9:30pm, try the 4-7-8 breathing technique. Your stress level is high (from profile) - a 5-min wind-down routine could help."`,
+Example: "Sounds like you've been getting around 6 hours - not bad, but let's aim for 7-8. Try putting your phone away by 10pm tonight. Your body will thank you! 😴"`,
 
-  Rex: `You are **Rex**, a fitness coach. Be energetic, concise, and safe.
+  Rex: `You're Rex, an upbeat fitness buddy. Energetic but not over the top. Talk like a gym friend.
 
-== USER DATA ==
 {patientContext}
 
 ${CITATION_INSTRUCTIONS}
 
-== RULES ==
-• Keep responses SHORT (3-5 sentences)
-• Use their actual step count, workout data
-• Check for injuries/conditions before suggesting exercises
-• Match intensity to their fitness level (from profile)
-• Stop immediately if: chest pain, dizziness, severe pain → call 911
+Keep it short and motivating - 2-3 sentences. One exercise tip, one encouragement.
 
-== EXAMPLE ==
-"Nice! 7,200 steps today (from health data). For your weight loss goal, add a 20-min brisk walk after dinner - that'll get you to 9K. Since you mentioned knee issues (from conditions), stick to low-impact: walking, swimming, or cycling."`,
+Example: "7K steps today, solid! Quick idea - add a 15-min walk after lunch and you'll crush 10K easy. Let's go! 🏃"`,
 
-  Meni: `You are **Meni**, a medication & monitoring assistant. Be careful, concise, and supportive.
+  Meni: `You're Meni, a helpful medication reminder buddy. Supportive and careful.
 
-== USER DATA ==
 {patientContext}
 
 ${CITATION_INSTRUCTIONS}
 
-== RULES ==
-• Keep responses SHORT (3-5 sentences)
-• Reference their actual medications and dosages
-• Check allergies before any suggestion
-• NEVER change medication advice - always defer to their doctor
-• For side effects or concerns → contact their doctor
+Keep it brief and supportive - 2-3 sentences. Never give medical advice, just friendly reminders.
 
-== EXAMPLE ==
-"Reminder: Metformin 500mg (from your medications) - take with breakfast to reduce stomach upset. Your heart rate averaged 78 BPM this week (from health data) - looking stable. Any side effects? Let your doctor know at your next visit."`,
+Example: "Just a heads up - don't forget your morning meds with breakfast! Let me know if you need anything. 💊"`,
 
-  Checklist: `You are **Checklist**, a task generator. Create 5-7 personalized daily tasks.
+  Checklist: `Generate 5-7 personalized daily tasks based on user data.
 
-== USER DATA ==
 {patientContext}
 
-== RULES ==
-• 5-7 tasks only
-• Task titles: 3-4 words max
+Rules:
+• 5-7 tasks max
+• Short titles (3-4 words)
+• Brief descriptions
 • Categories: nutrition, exercise, sleep, monitoring, medication
-• Base tasks on their ACTUAL data (goals, conditions, medications, health metrics)
-• Descriptions should explain WHY (e.g., "supports your weight loss goal")
 
-== OUTPUT (JSON only) ==
-{
-  "tasks": [
-    {"id": "1", "title": "Take Metformin", "description": "Morning dose with breakfast", "category": "medication", "scheduledTime": "8:00 AM", "isCompleted": false},
-    {"id": "2", "title": "Walk 8,000 steps", "description": "Your avg is 6,500 - working toward 10K goal", "category": "exercise", "scheduledTime": "Throughout day", "isCompleted": false},
-    {"id": "3", "title": "Drink 8 glasses water", "description": "Stay hydrated for your workouts", "category": "nutrition", "scheduledTime": "Throughout day", "isCompleted": false}
-  ]
-}`
+Return ONLY JSON:
+{"tasks":[{"id":"1","title":"Morning Walk","description":"15 min to start the day","category":"exercise","scheduledTime":"8:00 AM","isCompleted":false}]}`
 };
 
 /**
@@ -255,41 +205,71 @@ async function getPatientContext(userId, agentType) {
 }
 
 /**
+ * Post-process AI response to clean up and remove any reference tags
+ */
+function cleanResponse(response) {
+  let cleaned = response;
+  
+  // Remove ALL variations of [REF:...] tags (case insensitive)
+  cleaned = cleaned.replace(/\[REF:[^\]]*\]/gi, '');
+  cleaned = cleaned.replace(/\[ref:[^\]]*\]/gi, '');
+  cleaned = cleaned.replace(/\[Ref:[^\]]*\]/gi, '');
+  
+  // Remove any bracketed references like [lifestyle_exercise], [profile], [health_data], etc.
+  cleaned = cleaned.replace(/\[[a-z_]+\]/gi, '');
+  cleaned = cleaned.replace(/\[[a-z_]+:[^\]]*\]/gi, '');
+  
+  // Remove parenthetical data references
+  cleaned = cleaned.replace(/\(from your profile\)/gi, '');
+  cleaned = cleaned.replace(/\(from health data\)/gi, '');
+  cleaned = cleaned.replace(/\(from your data\)/gi, '');
+  cleaned = cleaned.replace(/\(from conditions\)/gi, '');
+  cleaned = cleaned.replace(/\(from medications\)/gi, '');
+  cleaned = cleaned.replace(/\(from your goals?\)/gi, '');
+  cleaned = cleaned.replace(/\(today's data\)/gi, '');
+  cleaned = cleaned.replace(/\(health history\)/gi, '');
+  cleaned = cleaned.replace(/\(from Apple Health\)/gi, '');
+  cleaned = cleaned.replace(/\(from onboarding\)/gi, '');
+  cleaned = cleaned.replace(/\(from your records?\)/gi, '');
+  cleaned = cleaned.replace(/\(your [a-z]+ data\)/gi, '');
+  
+  // Remove "based on/according to" phrases
+  cleaned = cleaned.replace(/based on your (profile|data|health data|records|information)/gi, '');
+  cleaned = cleaned.replace(/according to your (profile|data|health data|records|information)/gi, '');
+  cleaned = cleaned.replace(/as per your (profile|data|health data|records|information)/gi, '');
+  
+  // Clean up extra whitespace and punctuation issues
+  cleaned = cleaned.replace(/\s{2,}/g, ' ');
+  cleaned = cleaned.replace(/\s+([.,!?])/g, '$1');
+  cleaned = cleaned.replace(/,\s*,/g, ',');
+  cleaned = cleaned.replace(/\.\s*\./g, '.');
+  cleaned = cleaned.trim();
+  
+  return cleaned;
+}
+
+/**
  * Post-process AI response to enhance citations
  */
 function enhanceCitations(response, citations) {
-  // Find all [REF:...] tags in the response
-  const refPattern = /\[REF:([^\]]+)\]/g;
-  const usedRefs = [];
-  let match;
+  // Clean the response first - remove any [REF:...] tags
+  const cleanedResponse = cleanResponse(response);
   
-  while ((match = refPattern.exec(response)) !== null) {
-    usedRefs.push(match[1]);
-  }
-
-  // Build citation lookup from available data
+  // Build citation lookup from available data (for metadata, not display)
   const citationDetails = {};
   citations.forEach(cit => {
     if (cit.type === 'profile') {
-      citationDetails[`profile_${cit.field}`] = `From your profile: ${cit.field} = ${cit.value}`;
-    } else if (cit.type === 'health_steps' || cit.type === 'health_calories' || cit.type === 'health_hr') {
-      citationDetails[`${cit.type}:${cit.date}`] = `From Apple Health (${cit.date}): ${cit.value} ${cit.unit}`;
+      citationDetails[`profile_${cit.field}`] = `${cit.field}: ${cit.value}`;
     } else if (cit.type === 'goal') {
-      citationDetails[`goal_${cit.index}`] = `Your goal: ${cit.title}${cit.target ? ` (target: ${cit.target} ${cit.unit || ''})` : ''}`;
+      citationDetails[`goal_${cit.index}`] = `Goal: ${cit.title}`;
     } else if (cit.type === 'medical_condition') {
-      citationDetails[`condition_${cit.index}`] = `Condition: ${cit.name} (${cit.severity}, ${cit.status})`;
-    } else if (cit.type === 'medication') {
-      citationDetails[`medication_${cit.index}`] = `Medication: ${cit.name} ${cit.dosage || ''} ${cit.frequency || ''}`;
-    } else if (cit.type === 'allergy') {
-      citationDetails[`allergy_${cit.index}`] = `Allergy: ${cit.allergen} (${cit.severity})`;
-    } else if (cit.type === 'trend') {
-      citationDetails[`trend_${cit.metric}_avg`] = `${cit.period.replace('_', ' ')} average ${cit.metric}: ${cit.value}`;
+      citationDetails[`condition_${cit.index}`] = `Condition: ${cit.name}`;
     }
   });
 
   return {
-    response,
-    usedCitations: usedRefs,
+    response: cleanedResponse,
+    usedCitations: [],
     citationDetails
   };
 }
@@ -365,8 +345,8 @@ module.exports = async function handler(req, res) {
     }
 
     // Call AI API (OpenAI or OpenRouter)
-    // Use higher token limit for agents that need more context
-    const maxTokens = (agent === 'Nutri' || agent === 'Checklist') ? 1500 : 800;
+    // Lower token limits encourage shorter, more conversational responses
+    const maxTokens = (agent === 'Nutri' || agent === 'Checklist') ? 800 : 300;
     
     const response = await axios.post(API_URL, {
       model: isOpenRouter ? 'openai/gpt-4o-mini' : 'gpt-4o-mini',

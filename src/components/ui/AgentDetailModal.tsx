@@ -23,6 +23,7 @@ import { useTheme } from '@/theme';
 import { AIAgent, ChecklistItem, ChatMessage } from '@/types';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { supabase, TABLES } from '@/lib/supabase';
+import { cleanAIResponse } from '@/utils/cleanAIResponse';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 const MODAL_HEIGHT = screenHeight * 0.75;
@@ -431,7 +432,7 @@ Please use this information to provide personalized, relevant advice. Always add
         const agentMsg: ChatMessage = {
           id: Date.now().toString() + '-agent',
           agentId: agent.id,
-          content: data.choices[0].message.content,
+          content: cleanAIResponse(data.choices[0].message.content),
           timestamp: new Date().toISOString(),
           isUser: false,
         };
@@ -596,89 +597,73 @@ Please use this information to provide personalized, relevant advice. Always add
   return (
     <Modal
       visible={visible}
-      transparent
       animationType="slide"
+      presentationStyle="fullScreen"
       onRequestClose={onClose}
     >
-      {showConfetti && (
-        <ConfettiCannon
-          key={confettiKey}
-          count={80}
-          origin={{ x: screenWidth / 2, y: screenHeight * 0.4 }}
-          fadeOut
-          explosionSpeed={500}
-          fallSpeed={3000}
-          colors={[theme.colors.primary, theme.colors.semantic.info, theme.colors.semantic.warning, theme.colors.semantic.success, theme.colors.text.inverse]}
-          autoStart={true}
-        />
-      )}
-      <View style={styles.overlay}>
-        {/* Backdrop to close modal (behind modal) */}
-        <TouchableOpacity style={styles.backdropTouchable} activeOpacity={1} onPress={onClose} />
-        {/* Modal content (above backdrop) */}
-        <Animated.View
-          style={[
-            styles.modalContainer, 
-            { 
-              height: MODAL_HEIGHT, 
-              backgroundColor: theme.colors.background,
-              // Shift modal up when keyboard is shown
-              marginBottom: Platform.OS === 'ios' ? keyboardHeight : 0,
-            }
-          ]}
-          {...panResponder.panHandlers}
+      <SafeAreaView style={[styles.fullScreenContainer, { backgroundColor: theme.colors.background }]}>
+        {showConfetti && (
+          <ConfettiCannon
+            key={confettiKey}
+            count={80}
+            origin={{ x: screenWidth / 2, y: screenHeight * 0.4 }}
+            fadeOut
+            explosionSpeed={500}
+            fallSpeed={3000}
+            colors={[theme.colors.primary, theme.colors.semantic.info, theme.colors.semantic.warning, theme.colors.semantic.success, theme.colors.text.inverse]}
+            autoStart={true}
+          />
+        )}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <SafeAreaView style={{ flex: 1 }}>
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+          {/* Header */}
+          <View style={[styles.header, { borderBottomColor: theme.colors.border.light }]}> 
+            <View style={styles.headerLeft}>
+              <View style={[styles.agentAvatar, { backgroundColor: `${getAgentColor(agent.specialty)}20` }]}> 
+                <Ionicons name={getAgentIcon(agent.specialty) as any} size={24} color={getAgentColor(agent.specialty)} />
+              </View>
+              <View>
+                <Text style={[styles.agentName, { color: theme.colors.text.primary, ...theme.typography.h3 }]}>{agent.name}</Text>
+                <Text style={[styles.agentStatus, { color: theme.colors.semantic.success, ...theme.typography.caption }]}>Online • Ready to help</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton} accessibilityLabel="Close agent chat modal">
+              <Ionicons name="close" size={24} color={theme.colors.text.primary} />
+            </TouchableOpacity>
+          </View>
+          {/* Tabs */}
+          <View style={[styles.tabContainer, { borderBottomColor: theme.colors.border.light }]}> 
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'checklist' && { borderBottomColor: getAgentColor(agent.specialty) }]}
+              onPress={() => setActiveTab('checklist')}
             >
-              {/* Header */}
-              <View style={[styles.header, { borderBottomColor: theme.colors.border.light }]}> 
-                <View style={styles.headerLeft}>
-                  <View style={[styles.agentAvatar, { backgroundColor: `${getAgentColor(agent.specialty)}20` }]}> 
-                    <Ionicons name={getAgentIcon(agent.specialty) as any} size={24} color={getAgentColor(agent.specialty)} />
-                  </View>
-                  <View>
-                    <Text style={[styles.agentName, { color: theme.colors.text.primary, ...theme.typography.h3 }]}>{agent.name}</Text>
-                    <Text style={[styles.agentStatus, { color: theme.colors.semantic.success, ...theme.typography.caption }]}>Online • Ready to help</Text>
-                  </View>
-                </View>
-                <TouchableOpacity onPress={onClose} style={styles.closeButton} accessibilityLabel="Close agent chat modal">
-                  <Ionicons name="close" size={24} color={theme.colors.text.primary} />
-                </TouchableOpacity>
-              </View>
-              {/* Tabs */}
-              <View style={[styles.tabContainer, { borderBottomColor: theme.colors.border.light }]}> 
-                <TouchableOpacity
-                  style={[styles.tab, activeTab === 'checklist' && { borderBottomColor: getAgentColor(agent.specialty) }]}
-                  onPress={() => setActiveTab('checklist')}
-                >
-                  <Ionicons name="checkmark-circle-outline" size={20} color={activeTab === 'checklist' ? getAgentColor(agent.specialty) : theme.colors.text.secondary} />
-                  <Text style={[styles.tabText, { color: activeTab === 'checklist' ? getAgentColor(agent.specialty) : theme.colors.text.secondary, ...theme.typography.button }]}>Tasks</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.tab, activeTab === 'chat' && { borderBottomColor: getAgentColor(agent.specialty) }]}
-                  onPress={() => setActiveTab('chat')}
-                >
-                  <Ionicons name="chatbubble-outline" size={20} color={activeTab === 'chat' ? getAgentColor(agent.specialty) : theme.colors.text.secondary} />
-                  <Text style={[styles.tabText, { color: activeTab === 'chat' ? getAgentColor(agent.specialty) : theme.colors.text.secondary, ...theme.typography.button }]}>Chat</Text>
-                </TouchableOpacity>
-              </View>
-              {/* Content */}
-              <View style={{ flex: 1 }}>
-                {activeTab === 'checklist' ? renderChecklist() : renderChat()}
-              </View>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-        </Animated.View>
-      </View>
+              <Ionicons name="checkmark-circle-outline" size={20} color={activeTab === 'checklist' ? getAgentColor(agent.specialty) : theme.colors.text.secondary} />
+              <Text style={[styles.tabText, { color: activeTab === 'checklist' ? getAgentColor(agent.specialty) : theme.colors.text.secondary, ...theme.typography.button }]}>Tasks</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'chat' && { borderBottomColor: getAgentColor(agent.specialty) }]}
+              onPress={() => setActiveTab('chat')}
+            >
+              <Ionicons name="chatbubble-outline" size={20} color={activeTab === 'chat' ? getAgentColor(agent.specialty) : theme.colors.text.secondary} />
+              <Text style={[styles.tabText, { color: activeTab === 'chat' ? getAgentColor(agent.specialty) : theme.colors.text.secondary, ...theme.typography.button }]}>Chat</Text>
+            </TouchableOpacity>
+          </View>
+          {/* Content */}
+          <View style={{ flex: 1 }}>
+            {activeTab === 'checklist' ? renderChecklist() : renderChat()}
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  fullScreenContainer: {
+    flex: 1,
+  },
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',

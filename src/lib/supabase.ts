@@ -23,6 +23,8 @@ export const TABLES = {
   USER_PROFILES: 'user_profiles',
   HEALTH_DATA: 'health_data',
   MEAL_PLANS: 'meal_plans',
+  WORKOUT_PLANS: 'workout_plans',
+  SLEEP_SCHEDULES: 'sleep_schedules',
   USER_INSIGHTS: 'user_insights',
   HEALTH_DATA_HISTORY: 'health_data_history',
   AGENT_CONTEXT_CACHE: 'agent_context_cache',
@@ -95,6 +97,29 @@ export interface DatabaseMealPlan {
   user_id: string;
   content: string;
   day: string;
+  plan_date: string;
+  generated_at: string;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface DatabaseWorkoutPlan {
+  id: string;
+  user_id: string;
+  content: Record<string, any>; // JSONB storing workout structure
+  day: string;
+  plan_date: string;
+  generated_at: string;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface DatabaseSleepSchedule {
+  id: string;
+  user_id: string;
+  content: Record<string, any>; // JSONB storing sleep schedule structure
+  day: string;
+  plan_date: string;
   generated_at: string;
   updated_at: string;
   created_at: string;

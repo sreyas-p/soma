@@ -25,6 +25,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase, TABLES } from '@/lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cleanAIResponse } from '@/utils/cleanAIResponse';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -56,6 +57,64 @@ interface StructuredMealPlan {
   meals: MealPeriod[];
   generatedAt: string;
   totalDayCalories: number;
+}
+
+// Workout plan types for Rex
+interface WorkoutExercise {
+  id: string;
+  name: string;
+  sets?: number;
+  reps?: string;
+  duration?: string;
+  restTime?: string;
+  notes?: string;
+  muscleGroup?: string;
+}
+
+interface WorkoutSection {
+  type: 'warmup' | 'main' | 'cooldown' | 'cardio' | 'strength' | 'flexibility';
+  title: string;
+  exercises: WorkoutExercise[];
+  totalDuration?: string;
+}
+
+interface WorkoutPlan {
+  id?: string;
+  day: string;
+  title: string;
+  focusArea: string;
+  totalDuration: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  sections: WorkoutSection[];
+  generatedAt: string;
+  caloriesBurned?: number;
+}
+
+// Sleep schedule types for Luna
+interface SleepTip {
+  id: string;
+  tip: string;
+  category: 'routine' | 'environment' | 'nutrition' | 'relaxation' | 'habits';
+  icon?: string;
+}
+
+interface SleepPhase {
+  time: string;
+  activity: string;
+  duration?: string;
+  notes?: string;
+}
+
+interface SleepSchedule {
+  id?: string;
+  day: string;
+  targetBedtime: string;
+  targetWakeTime: string;
+  targetSleepHours: number;
+  eveningRoutine: SleepPhase[];
+  morningRoutine: SleepPhase[];
+  tips: SleepTip[];
+  generatedAt: string;
 }
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -258,6 +317,18 @@ export const DailyChecklistScreen: React.FC = () => {
   const [selectedFoodItem, setSelectedFoodItem] = useState<MealItem | null>(null);
   const [foodDetailModalVisible, setFoodDetailModalVisible] = useState(false);
 
+  // Rex-specific state for workout plan tabs
+  const [rexActiveTab, setRexActiveTab] = useState<'plan' | 'chat'>('plan');
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
+  const [isGeneratingWorkout, setIsGeneratingWorkout] = useState(false);
+  const [isSavingWorkoutPlan, setIsSavingWorkoutPlan] = useState(false);
+
+  // Luna-specific state for sleep schedule tabs
+  const [lunaActiveTab, setLunaActiveTab] = useState<'plan' | 'chat'>('plan');
+  const [sleepSchedule, setSleepSchedule] = useState<SleepSchedule | null>(null);
+  const [isGeneratingSleep, setIsGeneratingSleep] = useState(false);
+  const [isSavingSleepSchedule, setIsSavingSleepSchedule] = useState(false);
+
   const today = new Date().getDay();
 
   // Load saved checklist or generate new one
@@ -265,6 +336,8 @@ export const DailyChecklistScreen: React.FC = () => {
     if (user?.id) {
       loadOrGenerateChecklist();
       loadMealPlanFromBackend();
+      loadWorkoutPlanFromBackend();
+      loadSleepScheduleFromBackend();
     }
   }, [user]);
 
@@ -332,6 +405,122 @@ export const DailyChecklistScreen: React.FC = () => {
     }
   };
 
+  // Parse AI response into structured workout plan
+  const parseWorkoutPlanFromResponse = (content: string, day: string): WorkoutPlan | null => {
+    try {
+      // Try to extract JSON from the response
+      let jsonStr = content;
+      
+      // Check if JSON is wrapped in code blocks
+      const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) {
+        jsonStr = jsonMatch[1].trim();
+      }
+      
+      // Try to find JSON object in the response
+      const jsonObjectMatch = jsonStr.match(/\{[\s\S]*"sections"[\s\S]*\}/);
+      if (jsonObjectMatch) {
+        jsonStr = jsonObjectMatch[0];
+      }
+      
+      const parsed = JSON.parse(jsonStr);
+      
+      if (!parsed.sections || !Array.isArray(parsed.sections)) {
+        console.log('Invalid workout plan structure');
+        return null;
+      }
+      
+      // Process and validate the workout plan
+      const workoutPlanData: WorkoutPlan = {
+        day,
+        title: parsed.title || "Today's Workout",
+        focusArea: parsed.focusArea || 'Full Body',
+        totalDuration: parsed.totalDuration || '30 min',
+        difficulty: parsed.difficulty || 'intermediate',
+        caloriesBurned: parsed.caloriesBurned,
+        sections: (parsed.sections || []).map((section: any, idx: number) => ({
+          type: section.type || 'main',
+          title: section.title || 'Exercises',
+          totalDuration: section.totalDuration,
+          exercises: (section.exercises || []).map((ex: any, exIdx: number) => ({
+            id: ex.id || `${idx}-${exIdx}`,
+            name: ex.name || 'Exercise',
+            sets: ex.sets,
+            reps: ex.reps,
+            duration: ex.duration,
+            restTime: ex.restTime,
+            notes: ex.notes,
+            muscleGroup: ex.muscleGroup,
+          })),
+        })),
+        generatedAt: new Date().toISOString(),
+      };
+      
+      return workoutPlanData;
+    } catch (e) {
+      console.log('Could not parse workout plan JSON:', e);
+      return null;
+    }
+  };
+
+  // Parse AI response into structured sleep schedule
+  const parseSleepScheduleFromResponse = (content: string, day: string): SleepSchedule | null => {
+    try {
+      // Try to extract JSON from the response
+      let jsonStr = content;
+      
+      // Check if JSON is wrapped in code blocks
+      const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) {
+        jsonStr = jsonMatch[1].trim();
+      }
+      
+      // Try to find JSON object in the response
+      const jsonObjectMatch = jsonStr.match(/\{[\s\S]*"targetBedtime"[\s\S]*\}/);
+      if (jsonObjectMatch) {
+        jsonStr = jsonObjectMatch[0];
+      }
+      
+      const parsed = JSON.parse(jsonStr);
+      
+      if (!parsed.targetBedtime || !parsed.targetWakeTime) {
+        console.log('Invalid sleep schedule structure');
+        return null;
+      }
+      
+      // Process and validate the sleep schedule
+      const sleepScheduleData: SleepSchedule = {
+        day,
+        targetBedtime: parsed.targetBedtime || '10:30 PM',
+        targetWakeTime: parsed.targetWakeTime || '6:30 AM',
+        targetSleepHours: parsed.targetSleepHours || 8,
+        eveningRoutine: (parsed.eveningRoutine || []).map((phase: any) => ({
+          time: phase.time,
+          activity: phase.activity,
+          duration: phase.duration,
+          notes: phase.notes,
+        })),
+        morningRoutine: (parsed.morningRoutine || []).map((phase: any) => ({
+          time: phase.time,
+          activity: phase.activity,
+          duration: phase.duration,
+          notes: phase.notes,
+        })),
+        tips: (parsed.tips || []).map((tip: any, idx: number) => ({
+          id: tip.id || `tip-${idx}`,
+          tip: tip.tip,
+          category: tip.category || 'habits',
+        })),
+        generatedAt: new Date().toISOString(),
+      };
+      
+      return sleepScheduleData;
+    } catch (e) {
+      console.log('Could not parse sleep schedule JSON:', e);
+      return null;
+    }
+  };
+
   // Update specific meal items (for partial modifications)
   const updateMealItems = (period: string, newItems: MealItem[]) => {
     if (!structuredMealPlan) return;
@@ -354,22 +543,22 @@ export const DailyChecklistScreen: React.FC = () => {
     });
   };
 
+  // Get today's date string in YYYY-MM-DD format
+  const getTodayDateString = () => new Date().toISOString().split('T')[0];
+
   // Load meal plan from Supabase
   const loadMealPlanFromBackend = async () => {
     if (!user?.id) return;
     
     try {
       const today = FULL_DAYS[new Date().getDay()];
-      const todayDate = new Date().toISOString().split('T')[0];
+      const todayDate = getTodayDateString();
       
       const { data, error } = await supabase
         .from(TABLES.MEAL_PLANS)
         .select('*')
         .eq('user_id', user.id)
-        .eq('day', today)
-        .gte('created_at', todayDate)
-        .order('updated_at', { ascending: false })
-        .limit(1)
+        .eq('plan_date', todayDate)
         .maybeSingle();
       
       if (error) {
@@ -399,58 +588,182 @@ export const DailyChecklistScreen: React.FC = () => {
     }
   };
 
-  // Save meal plan to Supabase
-  const saveMealPlanToBackend = async (content: string, day: string, existingId?: string) => {
+  // Save meal plan to Supabase (upserts for the day)
+  const saveMealPlanToBackend = async (content: string, day: string) => {
     if (!user?.id) return null;
     
     setIsSavingMealPlan(true);
     try {
-      if (existingId) {
-        // Update existing meal plan
-        const { data, error } = await supabase
-          .from(TABLES.MEAL_PLANS)
-          .update({
-            content: content,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', existingId)
-          .select()
-          .single();
-        
-        if (error) {
-          console.error('Error updating meal plan:', error.message);
-          return null;
-        }
-        
-        console.log('📋 Updated meal plan in backend');
-        return data;
-      } else {
-        // Create new meal plan
-        const { data, error } = await supabase
-          .from(TABLES.MEAL_PLANS)
-          .insert({
-            user_id: user.id,
-            content: content,
-            day: day,
-            generated_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .select()
-          .single();
-        
-        if (error) {
-          console.error('Error saving meal plan:', error.message);
-          return null;
-        }
-        
-        console.log('📋 Saved new meal plan to backend');
-        return data;
+      const todayDate = getTodayDateString();
+      
+      // Use upsert to replace existing plan for today
+      const { data, error } = await supabase
+        .from(TABLES.MEAL_PLANS)
+        .upsert({
+          user_id: user.id,
+          content: content,
+          day: day,
+          plan_date: todayDate,
+          generated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,plan_date' })
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error saving meal plan:', error.message);
+        return null;
       }
+      
+      console.log('📋 Saved meal plan to backend');
+      return data;
     } catch (e: any) {
       console.error('Error saving meal plan:', e.message);
       return null;
     } finally {
       setIsSavingMealPlan(false);
+    }
+  };
+
+  // Load workout plan from Supabase
+  const loadWorkoutPlanFromBackend = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const today = FULL_DAYS[new Date().getDay()];
+      const todayDate = getTodayDateString();
+      
+      const { data, error } = await supabase
+        .from(TABLES.WORKOUT_PLANS)
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('plan_date', todayDate)
+        .maybeSingle();
+      
+      if (error) {
+        console.log('Error loading workout plan:', error.message);
+        return;
+      }
+      
+      if (data) {
+        console.log('🏋️ Loaded workout plan from backend');
+        const content = data.content as WorkoutPlan;
+        setWorkoutPlan({
+          ...content,
+          id: data.id,
+        });
+      }
+    } catch (e: any) {
+      console.log('Could not load workout plan:', e.message);
+    }
+  };
+
+  // Save workout plan to Supabase (upserts for the day)
+  const saveWorkoutPlanToBackend = async (plan: WorkoutPlan): Promise<any> => {
+    if (!user?.id) return null;
+    
+    setIsSavingWorkoutPlan(true);
+    try {
+      const today = FULL_DAYS[new Date().getDay()];
+      const todayDate = getTodayDateString();
+      
+      // Use upsert to replace existing plan for today
+      const { data, error } = await supabase
+        .from(TABLES.WORKOUT_PLANS)
+        .upsert({
+          user_id: user.id,
+          content: plan,
+          day: today,
+          plan_date: todayDate,
+          generated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,plan_date' })
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error saving workout plan:', error.message);
+        return null;
+      }
+      
+      console.log('🏋️ Saved workout plan to backend');
+      return data;
+    } catch (e: any) {
+      console.error('Error saving workout plan:', e.message);
+      return null;
+    } finally {
+      setIsSavingWorkoutPlan(false);
+    }
+  };
+
+  // Load sleep schedule from Supabase
+  const loadSleepScheduleFromBackend = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const today = FULL_DAYS[new Date().getDay()];
+      const todayDate = getTodayDateString();
+      
+      const { data, error } = await supabase
+        .from(TABLES.SLEEP_SCHEDULES)
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('plan_date', todayDate)
+        .maybeSingle();
+      
+      if (error) {
+        console.log('Error loading sleep schedule:', error.message);
+        return;
+      }
+      
+      if (data) {
+        console.log('😴 Loaded sleep schedule from backend');
+        const content = data.content as SleepSchedule;
+        setSleepSchedule({
+          ...content,
+          id: data.id,
+        });
+      }
+    } catch (e: any) {
+      console.log('Could not load sleep schedule:', e.message);
+    }
+  };
+
+  // Save sleep schedule to Supabase (upserts for the day)
+  const saveSleepScheduleToBackend = async (schedule: SleepSchedule): Promise<any> => {
+    if (!user?.id) return null;
+    
+    setIsSavingSleepSchedule(true);
+    try {
+      const today = FULL_DAYS[new Date().getDay()];
+      const todayDate = getTodayDateString();
+      
+      // Use upsert to replace existing schedule for today
+      const { data, error } = await supabase
+        .from(TABLES.SLEEP_SCHEDULES)
+        .upsert({
+          user_id: user.id,
+          content: schedule,
+          day: today,
+          plan_date: todayDate,
+          generated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,plan_date' })
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error saving sleep schedule:', error.message);
+        return null;
+      }
+      
+      console.log('😴 Saved sleep schedule to backend');
+      return data;
+    } catch (e: any) {
+      console.error('Error saving sleep schedule:', e.message);
+      return null;
+    } finally {
+      setIsSavingSleepSchedule(false);
     }
   };
 
@@ -1087,21 +1400,81 @@ export const DailyChecklistScreen: React.FC = () => {
     try {
       const userContext = buildUserContext();
       
-      // For Nutri agent, include meal plan context and instructions for modifications
+      // For agents with plans, include context and instructions for modifications
       let systemContext = userContext;
       let messageContent = message;
+      const messageLower = message.toLowerCase();
       
+      // Common modification keywords
+      const modificationKeywords = ['change', 'modify', 'update', 'replace', 'swap', 'switch', 'make it', 'less', 'more', 'add', 'remove', 'instead', 'different', 'earlier', 'later', 'shorter', 'longer', 'easier', 'harder', 'skip', 'want to'];
+      const isModificationRequest = modificationKeywords.some(keyword => messageLower.includes(keyword));
+      
+      // Nutri agent - meal plan modifications
       if (agent.name === 'Nutri' && mealPlan?.content) {
         systemContext += `\n\nCURRENT MEAL PLAN:\n${mealPlan.content}\n`;
         
-        // Check if user is asking to modify the meal plan
-        const modificationKeywords = ['change', 'modify', 'update', 'replace', 'swap', 'switch', 'make it', 'less', 'more', 'add', 'remove', 'instead', 'different', 'healthier', 'lower', 'higher', 'vegetarian', 'vegan', 'gluten', 'dairy', 'protein', 'carb', 'calorie'];
-        const isModificationRequest = modificationKeywords.some(keyword => 
-          message.toLowerCase().includes(keyword)
-        );
+        const nutriKeywords = [...modificationKeywords, 'healthier', 'lower', 'higher', 'vegetarian', 'vegan', 'gluten', 'dairy', 'protein', 'carb', 'calorie'];
+        const isNutriModification = nutriKeywords.some(keyword => messageLower.includes(keyword));
         
-        if (isModificationRequest) {
-          messageContent = `${message}\n\nIMPORTANT: If you're modifying my meal plan, please provide the COMPLETE updated meal plan in your response. Start the meal plan section with "---MEAL_PLAN_START---" and end it with "---MEAL_PLAN_END---". Include all meals (breakfast, lunch, dinner, snacks) even if only one was changed.`;
+        if (isNutriModification) {
+          messageContent = `${message}\n\nIMPORTANT: If you're modifying my meal plan, please provide the COMPLETE updated meal plan in your response as JSON with the same structure. Include all meals (breakfast, lunch, dinner, snacks) even if only one was changed.`;
+        }
+      }
+      
+      // Rex agent - workout plan modifications
+      if (agent.name === 'Rex' && workoutPlan) {
+        systemContext += `\n\nCURRENT WORKOUT PLAN:\n${JSON.stringify(workoutPlan, null, 2)}\n`;
+        
+        const rexKeywords = [...modificationKeywords, 'exercise', 'workout', 'sets', 'reps', 'rest', 'warmup', 'cooldown', 'cardio', 'strength', 'arms', 'legs', 'chest', 'back', 'core', 'abs', 'minutes', 'duration'];
+        const isRexModification = rexKeywords.some(keyword => messageLower.includes(keyword));
+        
+        if (isRexModification) {
+          messageContent = `${message}\n\nIMPORTANT: If you're modifying my workout plan, please provide the COMPLETE updated workout plan as JSON with this structure:
+{
+  "title": "...",
+  "focusArea": "...",
+  "totalDuration": "...",
+  "difficulty": "beginner|intermediate|advanced",
+  "caloriesBurned": number,
+  "sections": [
+    {
+      "type": "warmup|main|cooldown|cardio|strength|flexibility",
+      "title": "...",
+      "totalDuration": "...",
+      "exercises": [
+        {"name": "...", "sets": number, "reps": "...", "duration": "...", "restTime": "...", "notes": "...", "muscleGroup": "..."}
+      ]
+    }
+  ]
+}
+Include all sections even if only one was changed.`;
+        }
+      }
+      
+      // Luna agent - sleep schedule modifications
+      if (agent.name === 'Luna' && sleepSchedule) {
+        systemContext += `\n\nCURRENT SLEEP SCHEDULE:\n${JSON.stringify(sleepSchedule, null, 2)}\n`;
+        
+        const lunaKeywords = [...modificationKeywords, 'bedtime', 'wake', 'sleep', 'hour', 'routine', 'evening', 'morning', 'nap', 'tired', 'pm', 'am', 'night', 'early', 'late'];
+        const isLunaModification = lunaKeywords.some(keyword => messageLower.includes(keyword));
+        
+        if (isLunaModification) {
+          messageContent = `${message}\n\nIMPORTANT: If you're modifying my sleep schedule, please provide the COMPLETE updated schedule as JSON with this structure:
+{
+  "targetBedtime": "10:30 PM",
+  "targetWakeTime": "6:30 AM",
+  "targetSleepHours": 8,
+  "eveningRoutine": [
+    {"time": "...", "activity": "...", "duration": "...", "notes": "..."}
+  ],
+  "morningRoutine": [
+    {"time": "...", "activity": "...", "duration": "...", "notes": "..."}
+  ],
+  "tips": [
+    {"id": "...", "tip": "...", "category": "routine|environment|nutrition|relaxation|habits"}
+  ]
+}
+Include all routines even if only the bedtime/waketime was changed.`;
         }
       }
       
@@ -1153,7 +1526,7 @@ export const DailyChecklistScreen: React.FC = () => {
       const data = await response.json();
       
       if (data.choices && data.choices[0] && data.choices[0].message) {
-        let responseContent = data.choices[0].message.content;
+        let responseContent = cleanAIResponse(data.choices[0].message.content);
         
         // Check if the response contains an updated meal plan (for Nutri agent)
         if (agent.name === 'Nutri' && (mealPlan || structuredMealPlan)) {
@@ -1203,28 +1576,75 @@ export const DailyChecklistScreen: React.FC = () => {
                 generatedAt: new Date().toISOString(),
               });
               
-              responseContent = '✅ **Meal updated!** Only the modified items have been changed.\n\n' + responseContent;
+              // Clean success message
+              responseContent = '✅ Done! I\'ve updated your meal plan. Switch to the **Meal Plan** tab to see your changes.';
             } else {
               // Full update
               setStructuredMealPlan(parsedUpdate);
-              responseContent = '✅ **Meal plan updated!**\n\n' + responseContent;
+              // Clean success message
+              responseContent = '✅ Done! I\'ve updated your meal plan. Switch to the **Meal Plan** tab to see your changes.';
             }
             
             // Save to backend
             const savedPlan = await saveMealPlanToBackend(
               JSON.stringify(structuredMealPlan || parsedUpdate), 
-              today, 
-              mealPlan?.id
+              today
             );
             
             setMealPlan({
-              id: savedPlan?.id || mealPlan?.id,
-              content: responseContent,
+              id: savedPlan?.id,
+              content: JSON.stringify(structuredMealPlan || parsedUpdate),
               generatedAt: new Date().toISOString(),
               day: today,
             });
+          }
+        }
+        
+        // Check if the response contains an updated workout plan (for Rex agent)
+        if (agent.name === 'Rex' && workoutPlan) {
+          const today = FULL_DAYS[new Date().getDay()];
+          const lastUserMessage = chatMessages.filter(m => m.isUser).pop()?.content?.toLowerCase() || message.toLowerCase();
+          const wasRexModification = ['change', 'modify', 'update', 'replace', 'swap', 'switch', 'make it', 'easier', 'harder', 'shorter', 'longer', 'skip', 'add', 'remove', 'different', 'exercise', 'sets', 'reps', 'rest', 'warmup', 'cooldown'].some(
+            keyword => lastUserMessage.includes(keyword)
+          );
+          
+          if (wasRexModification) {
+            // Try to parse workout plan JSON from response
+            const parsedWorkout = parseWorkoutPlanFromResponse(responseContent, today);
             
-            responseContent += '\n\n_Switch to the Meal Plan tab to see your changes._';
+            if (parsedWorkout) {
+              setWorkoutPlan(parsedWorkout);
+              
+              // Save to backend
+              saveWorkoutPlanToBackend(parsedWorkout);
+              
+              // Clean success message
+              responseContent = '✅ Done! I\'ve updated your workout plan. Switch to the **Workout Plan** tab to see your changes.';
+            }
+          }
+        }
+        
+        // Check if the response contains an updated sleep schedule (for Luna agent)
+        if (agent.name === 'Luna' && sleepSchedule) {
+          const today = FULL_DAYS[new Date().getDay()];
+          const lastUserMessage = chatMessages.filter(m => m.isUser).pop()?.content?.toLowerCase() || message.toLowerCase();
+          const wasLunaModification = ['change', 'modify', 'update', 'replace', 'bedtime', 'wake', 'sleep', 'earlier', 'later', 'hour', 'routine', 'pm', 'am', '10', '11', '12', '6', '7', '8', '9'].some(
+            keyword => lastUserMessage.includes(keyword)
+          );
+          
+          if (wasLunaModification) {
+            // Try to parse sleep schedule JSON from response
+            const parsedSleep = parseSleepScheduleFromResponse(responseContent, today);
+            
+            if (parsedSleep) {
+              setSleepSchedule(parsedSleep);
+              
+              // Save to backend
+              saveSleepScheduleToBackend(parsedSleep);
+              
+              // Clean success message
+              responseContent = '✅ Done! I\'ve updated your sleep schedule. Switch to the **Sleep Schedule** tab to see your changes.';
+            }
           }
         }
         
@@ -1372,18 +1792,301 @@ All items in each meal MUST be from the SAME dining hall. Consider my health goa
     }
   };
 
+  // Generate workout plan using AI
+  const generateWorkoutPlan = async () => {
+    setIsGeneratingWorkout(true);
+    
+    try {
+      const userContext = buildUserContext();
+      const today = FULL_DAYS[new Date().getDay()];
+      
+      const requestBody = {
+        agent: 'Rex',
+        userContext: userContext,
+        userId: user?.id,
+        messages: [
+          {
+            role: 'user',
+            content: `Create a personalized workout plan for today (${today}).
+
+Consider my fitness level, any health conditions, and goals from my profile.
+
+Return as JSON:
+{
+  "title": "Today's Workout",
+  "focusArea": "Full Body / Upper Body / Lower Body / Cardio / etc",
+  "totalDuration": "45 min",
+  "difficulty": "beginner / intermediate / advanced",
+  "caloriesBurned": 300,
+  "sections": [
+    {
+      "type": "warmup",
+      "title": "Warm Up",
+      "totalDuration": "5 min",
+      "exercises": [
+        {"id": "1", "name": "Jumping Jacks", "duration": "60 sec", "notes": "Get your heart rate up"}
+      ]
+    },
+    {
+      "type": "main",
+      "title": "Main Workout",
+      "exercises": [
+        {"id": "2", "name": "Push-ups", "sets": 3, "reps": "10-12", "restTime": "60 sec", "muscleGroup": "Chest"}
+      ]
+    },
+    {
+      "type": "cooldown",
+      "title": "Cool Down",
+      "totalDuration": "5 min",
+      "exercises": [
+        {"id": "3", "name": "Stretching", "duration": "5 min"}
+      ]
+    }
+  ]
+}
+
+Return ONLY JSON.`,
+          },
+        ],
+      };
+      
+      let response: Response | null = null;
+      let lastError: string = '';
+      
+      for (const url of BACKEND_URLS) {
+        try {
+          response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+          });
+          
+          if (response.ok) break;
+          else {
+            const errorText = await response.text();
+            lastError = `${response.status}: ${errorText}`;
+            response = null;
+          }
+        } catch (e: any) {
+          lastError = e.message;
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw new Error(lastError || 'Failed to generate workout plan');
+      }
+      
+      const data = await response.json();
+      
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        const content = data.choices[0].message.content;
+        
+        try {
+          let jsonStr = content;
+          const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+          if (jsonMatch) jsonStr = jsonMatch[1].trim();
+          
+          const jsonObjectMatch = jsonStr.match(/\{[\s\S]*"sections"[\s\S]*\}/);
+          if (jsonObjectMatch) jsonStr = jsonObjectMatch[0];
+          
+          const parsed = JSON.parse(jsonStr);
+          
+          const workoutPlanData: WorkoutPlan = {
+            day: today,
+            title: parsed.title || "Today's Workout",
+            focusArea: parsed.focusArea || 'Full Body',
+            totalDuration: parsed.totalDuration || '30 min',
+            difficulty: parsed.difficulty || 'intermediate',
+            caloriesBurned: parsed.caloriesBurned,
+            sections: (parsed.sections || []).map((section: any, idx: number) => ({
+              type: section.type || 'main',
+              title: section.title || 'Exercises',
+              totalDuration: section.totalDuration,
+              exercises: (section.exercises || []).map((ex: any, exIdx: number) => ({
+                id: ex.id || `${idx}-${exIdx}`,
+                name: ex.name || 'Exercise',
+                sets: ex.sets,
+                reps: ex.reps,
+                duration: ex.duration,
+                restTime: ex.restTime,
+                notes: ex.notes,
+                muscleGroup: ex.muscleGroup,
+              })),
+            })),
+            generatedAt: new Date().toISOString(),
+          };
+          
+          setWorkoutPlan(workoutPlanData);
+          
+          // Save to Supabase
+          saveWorkoutPlanToBackend(workoutPlanData);
+        } catch (e) {
+          console.error('Error parsing workout plan:', e);
+          setWorkoutPlan(null);
+        }
+      }
+    } catch (error: any) {
+      console.error('Error generating workout plan:', error);
+      setWorkoutPlan(null);
+    } finally {
+      setIsGeneratingWorkout(false);
+    }
+  };
+
+  // Generate sleep schedule using AI
+  const generateSleepSchedule = async () => {
+    setIsGeneratingSleep(true);
+    
+    try {
+      const userContext = buildUserContext();
+      const today = FULL_DAYS[new Date().getDay()];
+      
+      const requestBody = {
+        agent: 'Luna',
+        userContext: userContext,
+        userId: user?.id,
+        messages: [
+          {
+            role: 'user',
+            content: `Create a personalized sleep schedule and routine for me.
+
+Consider my lifestyle, health conditions, and goals from my profile.
+
+Return as JSON:
+{
+  "targetBedtime": "10:30 PM",
+  "targetWakeTime": "6:30 AM",
+  "targetSleepHours": 8,
+  "eveningRoutine": [
+    {"time": "9:00 PM", "activity": "Stop screen time", "notes": "Blue light affects melatonin"},
+    {"time": "9:30 PM", "activity": "Light stretching or reading", "duration": "30 min"},
+    {"time": "10:00 PM", "activity": "Prepare for bed", "notes": "Brush teeth, skincare"},
+    {"time": "10:30 PM", "activity": "Lights out"}
+  ],
+  "morningRoutine": [
+    {"time": "6:30 AM", "activity": "Wake up - no snooze!", "notes": "Get sunlight exposure"},
+    {"time": "6:45 AM", "activity": "Hydrate", "notes": "Drink water before coffee"},
+    {"time": "7:00 AM", "activity": "Light movement or stretching"}
+  ],
+  "tips": [
+    {"id": "1", "tip": "Keep your room cool (65-68°F)", "category": "environment"},
+    {"id": "2", "tip": "Avoid caffeine after 2 PM", "category": "nutrition"},
+    {"id": "3", "tip": "Use blackout curtains", "category": "environment"}
+  ]
+}
+
+Return ONLY JSON.`,
+          },
+        ],
+      };
+      
+      let response: Response | null = null;
+      let lastError: string = '';
+      
+      for (const url of BACKEND_URLS) {
+        try {
+          response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+          });
+          
+          if (response.ok) break;
+          else {
+            const errorText = await response.text();
+            lastError = `${response.status}: ${errorText}`;
+            response = null;
+          }
+        } catch (e: any) {
+          lastError = e.message;
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw new Error(lastError || 'Failed to generate sleep schedule');
+      }
+      
+      const data = await response.json();
+      
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        const content = data.choices[0].message.content;
+        
+        try {
+          let jsonStr = content;
+          const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+          if (jsonMatch) jsonStr = jsonMatch[1].trim();
+          
+          const jsonObjectMatch = jsonStr.match(/\{[\s\S]*"targetBedtime"[\s\S]*\}/);
+          if (jsonObjectMatch) jsonStr = jsonObjectMatch[0];
+          
+          const parsed = JSON.parse(jsonStr);
+          
+          const sleepScheduleData: SleepSchedule = {
+            day: today,
+            targetBedtime: parsed.targetBedtime || '10:30 PM',
+            targetWakeTime: parsed.targetWakeTime || '6:30 AM',
+            targetSleepHours: parsed.targetSleepHours || 8,
+            eveningRoutine: (parsed.eveningRoutine || []).map((phase: any) => ({
+              time: phase.time,
+              activity: phase.activity,
+              duration: phase.duration,
+              notes: phase.notes,
+            })),
+            morningRoutine: (parsed.morningRoutine || []).map((phase: any) => ({
+              time: phase.time,
+              activity: phase.activity,
+              duration: phase.duration,
+              notes: phase.notes,
+            })),
+            tips: (parsed.tips || []).map((tip: any, idx: number) => ({
+              id: tip.id || `tip-${idx}`,
+              tip: tip.tip,
+              category: tip.category || 'habits',
+            })),
+            generatedAt: new Date().toISOString(),
+          };
+          
+          setSleepSchedule(sleepScheduleData);
+          
+          // Save to Supabase
+          saveSleepScheduleToBackend(sleepScheduleData);
+        } catch (e) {
+          console.error('Error parsing sleep schedule:', e);
+          setSleepSchedule(null);
+        }
+      }
+    } catch (error: any) {
+      console.error('Error generating sleep schedule:', error);
+      setSleepSchedule(null);
+    } finally {
+      setIsGeneratingSleep(false);
+    }
+  };
+
   const handleSelectAgent = (agent: AIAgent) => {
     setSelectedAgent(agent);
     setChatMessages([]);
     setShowAgentMenu(false);
     setAgentPanelOpen(true);
     
-    // Reset Nutri tab to 'plan' when selecting Nutri
+    // Reset tabs when selecting agents
     if (agent.name === 'Nutri') {
       setNutriActiveTab('plan');
       // Auto-generate meal plan if not already generated for today
       if (!mealPlan || mealPlan.day !== FULL_DAYS[new Date().getDay()]) {
         generateMealPlan();
+      }
+    } else if (agent.name === 'Rex') {
+      setRexActiveTab('plan');
+      // Auto-generate workout plan if not already generated for today
+      if (!workoutPlan || workoutPlan.day !== FULL_DAYS[new Date().getDay()]) {
+        generateWorkoutPlan();
+      }
+    } else if (agent.name === 'Luna') {
+      setLunaActiveTab('plan');
+      // Auto-generate sleep schedule if not already generated for today
+      if (!sleepSchedule || sleepSchedule.day !== FULL_DAYS[new Date().getDay()]) {
+        generateSleepSchedule();
       }
     }
   };
@@ -1706,24 +2409,19 @@ All items in each meal MUST be from the SAME dining hall. Consider my health goa
     </View>
   );
 
-  // Agent Panel (Bottom Sheet Style)
+  // Agent Panel (Full Screen Modal)
   const renderAgentPanel = () => (
-    <Animated.View 
-      style={[
-        styles.agentPanel,
-        { 
-          height: agentPanelHeight,
-          backgroundColor: theme.colors.background,
-          borderTopLeftRadius: 24,
-          borderTopRightRadius: 24,
-        }
-      ]}
+    <Modal
+      visible={agentPanelOpen && !!selectedAgent}
+      animationType="slide"
+      presentationStyle="fullScreen"
+      onRequestClose={() => setAgentPanelOpen(false)}
     >
-      {agentPanelOpen && selectedAgent && (
+      {selectedAgent && (
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
         <KeyboardAvoidingView 
           style={{ flex: 1 }} 
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={0}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           {/* Agent Header */}
           <View style={[styles.agentPanelHeader, { borderBottomColor: theme.colors.border.light }]}>
@@ -1830,7 +2528,96 @@ All items in each meal MUST be from the SAME dining hall. Consider my health goa
             </View>
           )}
 
-          {/* Meal Plan View - Only show for Nutri agent when Plan tab is active */}
+          {/* Rex Tabs (Workout Plan vs Chat) - Only show for Rex agent */}
+          {selectedAgent.name === 'Rex' && (
+            <View style={[styles.nutriTabContainer, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border.light }]}>
+              <TouchableOpacity
+                style={[
+                  styles.nutriTab,
+                  rexActiveTab === 'plan' && { backgroundColor: getAgentColor(selectedAgent.specialty) }
+                ]}
+                onPress={() => setRexActiveTab('plan')}
+              >
+                <Ionicons 
+                  name="barbell-outline" 
+                  size={16} 
+                  color={rexActiveTab === 'plan' ? 'white' : theme.colors.text.secondary} 
+                />
+                <Text style={[
+                  styles.nutriTabText,
+                  { color: rexActiveTab === 'plan' ? 'white' : theme.colors.text.secondary }
+                ]}>
+                  Workout Plan
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.nutriTab,
+                  rexActiveTab === 'chat' && { backgroundColor: getAgentColor(selectedAgent.specialty) }
+                ]}
+                onPress={() => setRexActiveTab('chat')}
+              >
+                <Ionicons 
+                  name="chatbubble-outline" 
+                  size={16} 
+                  color={rexActiveTab === 'chat' ? 'white' : theme.colors.text.secondary} 
+                />
+                <Text style={[
+                  styles.nutriTabText,
+                  { color: rexActiveTab === 'chat' ? 'white' : theme.colors.text.secondary }
+                ]}>
+                  Chat
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Luna Tabs (Sleep Schedule vs Chat) - Only show for Luna agent */}
+          {selectedAgent.name === 'Luna' && (
+            <View style={[styles.nutriTabContainer, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border.light }]}>
+              <TouchableOpacity
+                style={[
+                  styles.nutriTab,
+                  lunaActiveTab === 'plan' && { backgroundColor: getAgentColor(selectedAgent.specialty) }
+                ]}
+                onPress={() => setLunaActiveTab('plan')}
+              >
+                <Ionicons 
+                  name="moon-outline" 
+                  size={16} 
+                  color={lunaActiveTab === 'plan' ? 'white' : theme.colors.text.secondary} 
+                />
+                <Text style={[
+                  styles.nutriTabText,
+                  { color: lunaActiveTab === 'plan' ? 'white' : theme.colors.text.secondary }
+                ]}>
+                  Sleep Schedule
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.nutriTab,
+                  lunaActiveTab === 'chat' && { backgroundColor: getAgentColor(selectedAgent.specialty) }
+                ]}
+                onPress={() => setLunaActiveTab('chat')}
+              >
+                <Ionicons 
+                  name="chatbubble-outline" 
+                  size={16} 
+                  color={lunaActiveTab === 'chat' ? 'white' : theme.colors.text.secondary} 
+                />
+                <Text style={[
+                  styles.nutriTabText,
+                  { color: lunaActiveTab === 'chat' ? 'white' : theme.colors.text.secondary }
+                ]}>
+                  Chat
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Plan Views - Show appropriate plan based on selected agent */}
+          {/* Meal Plan View - Nutri agent */}
           {selectedAgent.name === 'Nutri' && nutriActiveTab === 'plan' ? (
             <ScrollView 
               style={styles.chatMessagesContainer}
@@ -2018,6 +2805,353 @@ All items in each meal MUST be from the SAME dining hall. Consider my health goa
                 </View>
               )}
             </ScrollView>
+          ) : selectedAgent.name === 'Rex' && rexActiveTab === 'plan' ? (
+            /* Workout Plan View - Rex agent */
+            <ScrollView 
+              style={styles.chatMessagesContainer}
+              contentContainerStyle={styles.mealPlanContent}
+              showsVerticalScrollIndicator={false}
+            >
+              {isGeneratingWorkout ? (
+                <View style={styles.mealPlanLoading}>
+                  <Ionicons name="barbell" size={48} color={getAgentColor(selectedAgent.specialty)} />
+                  <Text style={[styles.mealPlanLoadingText, { color: theme.colors.text.primary }]}>
+                    Creating your personalized workout plan...
+                  </Text>
+                  <Text style={[styles.mealPlanLoadingSubtext, { color: theme.colors.text.secondary }]}>
+                    Considering your fitness level and goals
+                  </Text>
+                </View>
+              ) : workoutPlan ? (
+                <View style={styles.mealPlanContainer}>
+                  <View style={[styles.mealPlanHeader, { backgroundColor: getAgentColor(selectedAgent.specialty) + '15' }]}>
+                    <View style={styles.mealPlanHeaderContent}>
+                      <View style={[styles.mealPlanIconBadge, { backgroundColor: getAgentColor(selectedAgent.specialty) }]}>
+                        <Ionicons name="fitness" size={16} color="white" />
+                      </View>
+                      <View>
+                        <Text style={[styles.mealPlanTitle, { color: theme.colors.text.primary }]}>
+                          {workoutPlan.title}
+                        </Text>
+                        <Text style={[styles.mealPlanSubtitle, { color: theme.colors.text.secondary }]}>
+                          {workoutPlan.focusArea} • {workoutPlan.totalDuration} • {workoutPlan.difficulty}
+                        </Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={[styles.refreshPlanButton, { backgroundColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                      onPress={generateWorkoutPlan}
+                      disabled={isGeneratingWorkout}
+                    >
+                      <Ionicons name="refresh" size={16} color={getAgentColor(selectedAgent.specialty)} />
+                    </TouchableOpacity>
+                  </View>
+                  
+                  {/* Workout Sections */}
+                  <View style={styles.structuredMealPlan}>
+                    {workoutPlan.caloriesBurned && (
+                      <View style={[styles.dayCalorieSummary, { backgroundColor: getAgentColor(selectedAgent.specialty) + '10' }]}>
+                        <Text style={[styles.dayCalorieText, { color: theme.colors.text.primary }]}>
+                          🔥 Estimated burn: {workoutPlan.caloriesBurned} calories
+                        </Text>
+                      </View>
+                    )}
+                    
+                    {workoutPlan.sections.map((section, sectionIdx) => (
+                      <View key={sectionIdx} style={styles.mealPeriodSection}>
+                        <View style={styles.mealPeriodHeader}>
+                          <View style={styles.mealPeriodTitleRow}>
+                            <Ionicons 
+                              name={section.type === 'warmup' ? 'flame-outline' : 
+                                    section.type === 'cardio' ? 'heart-outline' : 
+                                    section.type === 'strength' ? 'barbell-outline' : 
+                                    section.type === 'cooldown' ? 'snow-outline' : 'body-outline'} 
+                              size={18} 
+                              color={getAgentColor(selectedAgent.specialty)} 
+                            />
+                            <Text style={[styles.mealPeriodTitle, { color: theme.colors.text.primary }]}>
+                              {section.title}
+                            </Text>
+                          </View>
+                          {section.totalDuration && (
+                            <Text style={[styles.mealPeriodCalories, { color: theme.colors.text.secondary }]}>
+                              {section.totalDuration}
+                            </Text>
+                          )}
+                        </View>
+                        
+                        <View style={styles.foodItemsContainer}>
+                          {section.exercises.map((exercise, exIdx) => (
+                            <View
+                              key={exercise.id}
+                              style={[styles.foodItemButton, { borderColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                            >
+                              <View style={styles.foodItemMain}>
+                                <Text style={[styles.foodItemName, { color: theme.colors.text.primary }]} numberOfLines={1}>
+                                  {exercise.name}
+                                </Text>
+                                <Text style={[styles.foodItemCalories, { color: getAgentColor(selectedAgent.specialty) }]}>
+                                  {exercise.sets ? `${exercise.sets} × ${exercise.reps}` : exercise.duration}
+                                </Text>
+                              </View>
+                              {(exercise.muscleGroup || exercise.restTime) && (
+                                <View style={styles.foodItemMeta}>
+                                  {exercise.muscleGroup && (
+                                    <Text style={[styles.foodItemHall, { color: theme.colors.text.tertiary }]}>
+                                      💪 {exercise.muscleGroup}
+                                    </Text>
+                                  )}
+                                  {exercise.restTime && (
+                                    <Text style={[styles.foodItemHall, { color: theme.colors.text.tertiary }]}>
+                                      ⏱ Rest: {exercise.restTime}
+                                    </Text>
+                                  )}
+                                </View>
+                              )}
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                  
+                  {/* Quick Edit Options */}
+                  <View style={styles.quickEditContainer}>
+                    <Text style={[styles.quickEditLabel, { color: theme.colors.text.tertiary }]}>
+                      Quick edits:
+                    </Text>
+                    <View style={styles.quickEditOptions}>
+                      {[
+                        { label: '⚡ HIIT', prompt: 'Change this to a high-intensity interval training workout.' },
+                        { label: '🏠 Home workout', prompt: 'Modify for home with no equipment.' },
+                        { label: '⏱ 15 min', prompt: 'Make it a quick 15-minute workout.' },
+                        { label: '💪 More strength', prompt: 'Add more strength training exercises.' },
+                      ].map((option, idx) => (
+                        <TouchableOpacity
+                          key={idx}
+                          style={[styles.quickEditChip, { borderColor: getAgentColor(selectedAgent.specialty) + '40' }]}
+                          onPress={() => {
+                            setRexActiveTab('chat');
+                            setChatMessages([]);
+                            setTimeout(() => {
+                              sendMessageToAgent(option.prompt, selectedAgent);
+                            }, 100);
+                          }}
+                        >
+                          <Text style={[styles.quickEditChipText, { color: theme.colors.text.primary }]}>
+                            {option.label}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              ) : (
+                <View style={styles.mealPlanEmpty}>
+                  <Ionicons name="barbell-outline" size={48} color={theme.colors.text.disabled} />
+                  <Text style={[styles.mealPlanEmptyText, { color: theme.colors.text.secondary }]}>
+                    No workout plan generated yet
+                  </Text>
+                  <TouchableOpacity
+                    style={[styles.generatePlanButton, { backgroundColor: getAgentColor(selectedAgent.specialty) }]}
+                    onPress={generateWorkoutPlan}
+                    disabled={isGeneratingWorkout}
+                  >
+                    <Ionicons name="sparkles" size={18} color="white" />
+                    <Text style={styles.generatePlanButtonText}>Generate Workout Plan</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </ScrollView>
+          ) : selectedAgent.name === 'Luna' && lunaActiveTab === 'plan' ? (
+            /* Sleep Schedule View - Luna agent */
+            <ScrollView 
+              style={styles.chatMessagesContainer}
+              contentContainerStyle={styles.mealPlanContent}
+              showsVerticalScrollIndicator={false}
+            >
+              {isGeneratingSleep ? (
+                <View style={styles.mealPlanLoading}>
+                  <Ionicons name="moon" size={48} color={getAgentColor(selectedAgent.specialty)} />
+                  <Text style={[styles.mealPlanLoadingText, { color: theme.colors.text.primary }]}>
+                    Creating your personalized sleep schedule...
+                  </Text>
+                  <Text style={[styles.mealPlanLoadingSubtext, { color: theme.colors.text.secondary }]}>
+                    Optimizing for your lifestyle and goals
+                  </Text>
+                </View>
+              ) : sleepSchedule ? (
+                <View style={styles.mealPlanContainer}>
+                  <View style={[styles.mealPlanHeader, { backgroundColor: getAgentColor(selectedAgent.specialty) + '15' }]}>
+                    <View style={styles.mealPlanHeaderContent}>
+                      <View style={[styles.mealPlanIconBadge, { backgroundColor: getAgentColor(selectedAgent.specialty) }]}>
+                        <Ionicons name="bed" size={16} color="white" />
+                      </View>
+                      <View>
+                        <Text style={[styles.mealPlanTitle, { color: theme.colors.text.primary }]}>
+                          Sleep Schedule
+                        </Text>
+                        <Text style={[styles.mealPlanSubtitle, { color: theme.colors.text.secondary }]}>
+                          🛏 {sleepSchedule.targetBedtime} → ☀️ {sleepSchedule.targetWakeTime} ({sleepSchedule.targetSleepHours}h)
+                        </Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={[styles.refreshPlanButton, { backgroundColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                      onPress={generateSleepSchedule}
+                      disabled={isGeneratingSleep}
+                    >
+                      <Ionicons name="refresh" size={16} color={getAgentColor(selectedAgent.specialty)} />
+                    </TouchableOpacity>
+                  </View>
+                  
+                  <View style={styles.structuredMealPlan}>
+                    {/* Evening Routine */}
+                    <View style={styles.mealPeriodSection}>
+                      <View style={styles.mealPeriodHeader}>
+                        <View style={styles.mealPeriodTitleRow}>
+                          <Ionicons name="moon-outline" size={18} color={getAgentColor(selectedAgent.specialty)} />
+                          <Text style={[styles.mealPeriodTitle, { color: theme.colors.text.primary }]}>
+                            Evening Routine
+                          </Text>
+                        </View>
+                      </View>
+                      
+                      <View style={styles.foodItemsContainer}>
+                        {sleepSchedule.eveningRoutine.map((phase, idx) => (
+                          <View
+                            key={idx}
+                            style={[styles.foodItemButton, { borderColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                          >
+                            <View style={styles.foodItemMain}>
+                              <Text style={[styles.foodItemCalories, { color: getAgentColor(selectedAgent.specialty) }]}>
+                                {phase.time}
+                              </Text>
+                              <Text style={[styles.foodItemName, { color: theme.colors.text.primary, flex: 1 }]}>
+                                {phase.activity}
+                              </Text>
+                            </View>
+                            {phase.notes && (
+                              <Text style={[styles.foodItemHall, { color: theme.colors.text.tertiary }]}>
+                                💡 {phase.notes}
+                              </Text>
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                    
+                    {/* Morning Routine */}
+                    <View style={styles.mealPeriodSection}>
+                      <View style={styles.mealPeriodHeader}>
+                        <View style={styles.mealPeriodTitleRow}>
+                          <Ionicons name="sunny-outline" size={18} color={getAgentColor(selectedAgent.specialty)} />
+                          <Text style={[styles.mealPeriodTitle, { color: theme.colors.text.primary }]}>
+                            Morning Routine
+                          </Text>
+                        </View>
+                      </View>
+                      
+                      <View style={styles.foodItemsContainer}>
+                        {sleepSchedule.morningRoutine.map((phase, idx) => (
+                          <View
+                            key={idx}
+                            style={[styles.foodItemButton, { borderColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                          >
+                            <View style={styles.foodItemMain}>
+                              <Text style={[styles.foodItemCalories, { color: getAgentColor(selectedAgent.specialty) }]}>
+                                {phase.time}
+                              </Text>
+                              <Text style={[styles.foodItemName, { color: theme.colors.text.primary, flex: 1 }]}>
+                                {phase.activity}
+                              </Text>
+                            </View>
+                            {phase.notes && (
+                              <Text style={[styles.foodItemHall, { color: theme.colors.text.tertiary }]}>
+                                💡 {phase.notes}
+                              </Text>
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                    
+                    {/* Sleep Tips */}
+                    {sleepSchedule.tips.length > 0 && (
+                      <View style={styles.mealPeriodSection}>
+                        <View style={styles.mealPeriodHeader}>
+                          <View style={styles.mealPeriodTitleRow}>
+                            <Ionicons name="bulb-outline" size={18} color={getAgentColor(selectedAgent.specialty)} />
+                            <Text style={[styles.mealPeriodTitle, { color: theme.colors.text.primary }]}>
+                              Sleep Tips
+                            </Text>
+                          </View>
+                        </View>
+                        
+                        <View style={styles.foodItemsContainer}>
+                          {sleepSchedule.tips.map((tip, idx) => (
+                            <View
+                              key={tip.id}
+                              style={[styles.foodItemButton, { borderColor: getAgentColor(selectedAgent.specialty) + '30' }]}
+                            >
+                              <Text style={[styles.foodItemName, { color: theme.colors.text.primary }]}>
+                                {tip.tip}
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    )}
+                  </View>
+                  
+                  {/* Quick Edit Options */}
+                  <View style={styles.quickEditContainer}>
+                    <Text style={[styles.quickEditLabel, { color: theme.colors.text.tertiary }]}>
+                      Quick edits:
+                    </Text>
+                    <View style={styles.quickEditOptions}>
+                      {[
+                        { label: '🌙 Earlier bedtime', prompt: 'Adjust my schedule for an earlier bedtime.' },
+                        { label: '☀️ Earlier wake', prompt: 'Help me wake up earlier.' },
+                        { label: '😴 More sleep', prompt: 'How can I get more sleep hours?' },
+                        { label: '💤 Better quality', prompt: 'Tips for better sleep quality.' },
+                      ].map((option, idx) => (
+                        <TouchableOpacity
+                          key={idx}
+                          style={[styles.quickEditChip, { borderColor: getAgentColor(selectedAgent.specialty) + '40' }]}
+                          onPress={() => {
+                            setLunaActiveTab('chat');
+                            setChatMessages([]);
+                            setTimeout(() => {
+                              sendMessageToAgent(option.prompt, selectedAgent);
+                            }, 100);
+                          }}
+                        >
+                          <Text style={[styles.quickEditChipText, { color: theme.colors.text.primary }]}>
+                            {option.label}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              ) : (
+                <View style={styles.mealPlanEmpty}>
+                  <Ionicons name="moon-outline" size={48} color={theme.colors.text.disabled} />
+                  <Text style={[styles.mealPlanEmptyText, { color: theme.colors.text.secondary }]}>
+                    No sleep schedule generated yet
+                  </Text>
+                  <TouchableOpacity
+                    style={[styles.generatePlanButton, { backgroundColor: getAgentColor(selectedAgent.specialty) }]}
+                    onPress={generateSleepSchedule}
+                    disabled={isGeneratingSleep}
+                  >
+                    <Ionicons name="sparkles" size={18} color="white" />
+                    <Text style={styles.generatePlanButtonText}>Generate Sleep Schedule</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </ScrollView>
           ) : (
             <>
               {/* Chat Messages */}
@@ -2135,8 +3269,9 @@ All items in each meal MUST be from the SAME dining hall. Consider my health goa
             </>
           )}
         </KeyboardAvoidingView>
+      </SafeAreaView>
       )}
-    </Animated.View>
+    </Modal>
   );
 
   // Agent FAB Menu (Bottom Right)

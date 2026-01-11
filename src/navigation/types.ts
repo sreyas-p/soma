@@ -11,6 +11,8 @@ export type DrawerParamList = {
   Settings: undefined;
   Family: undefined;
   ConnectedDevices: undefined;
+  HealthTrends: undefined;
+  FoodScanner: undefined;
 };
 
 // Stack navigation params for screens that need sub-navigation
