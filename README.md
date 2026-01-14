@@ -125,4 +125,3 @@ MIT
 
 ---
 
-Built at SB Hacks XI 🏖️
